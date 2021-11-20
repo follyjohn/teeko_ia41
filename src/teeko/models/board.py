@@ -13,7 +13,7 @@ class Board:
         self._positions = self.generate()
         self._remaining_pieces = {}
         self._remaining_pieces[TeekoColorEnum.BLACK_COLOR] = self._piece_count
-        self._remaining_pieces[TeekoColorEnum.WHITE_COLOR] = self._piece_count
+        self._remaining_pieces[TeekoColorEnum.RED_COLOR] = self._piece_count
 
     @property
     def size(self) -> int:
@@ -54,8 +54,10 @@ class Board:
         print()
 
         print("Remaining pieces:")
-        print("White:", self.get_remaining_pieces_by_color(TeekoColorEnum.WHITE_COLOR))
+        
         print("Black:", self.get_remaining_pieces_by_color(TeekoColorEnum.BLACK_COLOR))
+        print("Red:", self.get_remaining_pieces_by_color(TeekoColorEnum.RED_COLOR))
+        print()
 
     def move_piece(self, movement): #TODO:type movement
         if movement.is_new_piece_movement():
@@ -78,7 +80,7 @@ class Board:
 
     def get_pieces_positions(self) -> Dict[TeekoColorEnum, List[Position]]:
         pieces_positions: Dict[TeekoColorEnum, List[Position]] = {}
-        for color in [TeekoColorEnum.BLACK_COLOR, TeekoColorEnum.WHITE_COLOR]:
+        for color in [TeekoColorEnum.BLACK_COLOR, TeekoColorEnum.RED_COLOR]:
             pieces_positions[color] = self.get_positions_by_color(color)
         return pieces_positions
 

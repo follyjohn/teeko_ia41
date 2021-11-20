@@ -1,6 +1,6 @@
 from enum import Enum
 
 class TeekoPieceEnum(Enum):
-    WHITE_PIECE = "b"
-    BLACK_PIECE = "a"
+    BLACK_PIECE = "b"
+    RED_PIECE = "r"
     EMPTY_PIECE = " "

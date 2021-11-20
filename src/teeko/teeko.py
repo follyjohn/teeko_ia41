@@ -46,7 +46,7 @@ class Teeko(Game):
         player_a = HumanPlayer()
         player_b = HumanPlayer()
         self.set_black_player(player_a)
-        self.set_withe_player(player_b)
+        self.set_red_player(player_b)
 
     def _initilise_board(self):
         print("Initialise board")
@@ -56,16 +56,16 @@ class Teeko(Game):
         
     def is_game_over(self) -> bool:
         black_pieces = self.board.get_positions_by_color(TeekoColorEnum.BLACK_COLOR)
-        white_pieces = self.board.get_positions_by_color(TeekoColorEnum.WHITE_COLOR)
+        red_pieces = self.board.get_positions_by_color(TeekoColorEnum.RED_COLOR)
 
         if len(black_pieces) == 4:
             if Position.is_positions_square(black_pieces) or Position.is_positions_straight_line(black_pieces) or Position.is_positions_oblique_line(black_pieces):
                 self._winner = self.get_black_player()
                 return True
             
-        if len(white_pieces) == 4:
-            if Position.is_positions_square(white_pieces) or Position.is_positions_straight_line(white_pieces) or Position.is_positions_oblique_line(white_pieces):
-                self._winner = self.get_withe_player()
+        if len(red_pieces) == 4:
+            if Position.is_positions_square(red_pieces) or Position.is_positions_straight_line(red_pieces) or Position.is_positions_oblique_line(red_pieces):
+                self._winner = self.get_red_player()
                 return True
             
         return False
@@ -92,7 +92,7 @@ class Teeko(Game):
         while not self.is_game_over():
             self.play_turn(next_player)
             if next_player == self.get_black_player():
-                next_player = self.get_withe_player()
+                next_player = self.get_red_player()
             else:
                 next_player = self.get_black_player()
 
@@ -104,14 +104,14 @@ class Teeko(Game):
     def get_black_player(self) -> Player:
         return self.players[TeekoColorEnum.BLACK_COLOR]
 
-    def get_withe_player(self) -> Player:
-        return self.players[TeekoColorEnum.WHITE_COLOR]
+    def get_red_player(self) -> Player:
+        return self.players[TeekoColorEnum.RED_COLOR]
 
     def set_black_player(self, player: Player):
         self.set_player(player=player, color=TeekoColorEnum.BLACK_COLOR)
 
-    def set_withe_player(self, player: Player):
-        self.set_player(player=player, color=TeekoColorEnum.WHITE_COLOR)
+    def set_red_player(self, player: Player):
+        self.set_player(player=player, color=TeekoColorEnum.RED_COLOR)
 
     def set_player(self, player: Player, color:TeekoColorEnum):
         if(color not in self.players.keys()):
