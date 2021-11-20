@@ -1,0 +1,94 @@
+from typing import List
+from teeko.models.coordinate import Coordinate
+from teeko.models.teeko_piece import TeekoPieceEnum
+import math
+
+class Position:
+
+    def __init__(self, abs: int, ord: int, piece: TeekoPieceEnum):
+        self._abs = abs
+        self._ord = ord
+        self._piece = piece
+
+    @property
+    def get_abs(self) -> int:
+        return self._abs
+
+    @property
+    def get_ord(self) -> int:
+        return self._ord
+
+    @property
+    def get_piece(self) -> TeekoPieceEnum:
+        return self._piece
+
+    def get_coordinate(self) -> Coordinate:
+        return Coordinate(self._abs, self._ord)
+
+    @staticmethod
+    def eucludian_distance(coord1: Coordinate, coord2: Coordinate) -> int:
+        return math.sqrt((math.pow(abs(coord1.get_x - coord2.get_x), 2) + math.pow(abs(coord1.get_y - coord2.get_y), 2)))
+
+    @staticmethod
+    def manhattan_distance(coord1: Coordinate, coord2: Coordinate) -> int:
+        return abs(coord1.get_x - coord2.get_x) + abs(coord1.get_y - coord2.get_y)
+
+    @staticmethod
+    def get_coordinate_from_positions(posistions: list) -> List[Coordinate]:
+        return [p.get_coordinate() for p in posistions]
+
+    @staticmethod
+    def is_positions_square(positions: list) -> bool:
+        if len(positions) < 4:
+            return False
+        positions_coordinates = Position.get_coordinate_from_positions(positions)
+        for a in positions_coordinates:
+            for b in positions_coordinates:
+                if a.get_x == b.get_x or a.get_y == b.get_y:
+                    if Position.eucludian_distance(a, b) == 1:
+                        continue
+                    else:
+                        return False
+                elif not(a.get_x == b.get_y and a.get_y == b.get_x):
+                    return False
+
+        return True
+
+    @staticmethod
+    def is_positions_straight_line(positions: list) -> bool:
+        if len(positions) < 4:
+            return False
+        positions_coordinates = Position.get_coordinate_from_positions(positions)
+        for a in positions_coordinates:
+            for b in positions_coordinates:
+                if a.get_x == b.get_x or a.get_y == b.get_y:
+                    if Position.eucludian_distance(a, b) <= 3:
+                        continue
+                    else:
+                        return False
+                else:
+                    return False
+
+        return True
+
+    @staticmethod
+    def is_positions_oblique_line(positions: list) -> bool:
+        if len(positions) < 4:
+            return False
+        positions_coordinates = Position.get_coordinate_from_positions(positions)
+        for a in positions_coordinates:
+            for b in positions_coordinates:
+                if not (a.get_x == b.get_x or a.get_y == b.get_y):
+                    if Position.manhattan_distance(a, b) <= 6:
+                        continue
+                    else:
+                        return False
+                else:
+                    return False
+
+        return True
+                
+
+    def set_piece(self, piece: TeekoPieceEnum):
+        self._piece = piece
+
