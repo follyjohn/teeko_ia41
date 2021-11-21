@@ -50,6 +50,9 @@ class Movement:
             if Position.manhattan_distance(self.get_origin_coord, self.get_destination_coord) != 1:
                 print("Movement is not a single step")
                 return False
+            if self.get_origin_coord.get_x == self.get_destination_coord.get_x and self.get_origin_coord.get_y == self.get_destination_coord.get_y:
+                print("The movement is not a step")
+                return False
             if board.get_piece_at_coordinate(self.get_origin_coord) == TeekoPieceEnum.EMPTY_PIECE:
                 print("No piece at position")
                 return False

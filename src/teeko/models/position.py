@@ -45,11 +45,9 @@ class Position:
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a.get_x == b.get_x or a.get_y == b.get_y:
-                    if Position.manhattan_distance(a, b) == 1:
-                        continue
-                    else:
+                    if Position.eucludian_distance(a, b) > 1:
                         return False
-                elif a.get_x != b.get_y and a.get_y != b.get_x:
+                elif Position.manhattan_distance(a, b) != 2:
                     return False
 
         return True
@@ -62,9 +60,7 @@ class Position:
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a.get_x == b.get_x or a.get_y == b.get_y:
-                    if Position.eucludian_distance(a, b) <= 3:
-                        continue
-                    else:
+                    if Position.eucludian_distance(a, b) > 3:
                         return False
                 else:
                     return False
@@ -78,12 +74,10 @@ class Position:
         positions_coordinates = Position.get_coordinate_from_positions(positions)
         for a in positions_coordinates:
             for b in positions_coordinates:
-                if not (a.get_x == b.get_x or a.get_y == b.get_y):
-                    if Position.manhattan_distance(a, b) <= 6:
-                        continue
-                    else:
-                        return False
-                else:
+                if (a.get_x == b.get_x and a.get_y != b.get_y) or (a.get_y == b.get_y and a.get_x != b.get_x):
+                    return False
+                elif Position.manhattan_distance(a, b) > 6:
+                    print("dd")
                     return False
 
         return True
