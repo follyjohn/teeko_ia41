@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from teeko.models.board import Board
 from teeko.models.coordinate import Coordinate
 import re
 from teeko.models.movement import Movement
@@ -19,8 +20,9 @@ class Player(ABC):
         print("player : ", self._name)
 
     @abstractmethod
-    def move(self) -> Movement:
+    def move(self, board: Board) -> Movement:
         pass
+
 
     def get_name(self):
         return self._name
@@ -44,7 +46,7 @@ class HumanPlayer(Player):
 
     def move_from_coordinate(self) -> Coordinate:
         raw_coordinate = input(
-            "Enter the coordinate of the piece you want to move, eg = x4y2 : ")
+            "Enter the coordinate of the piece you want to move, eg = xEyE : ")
         while not (re.fullmatch(r'[x]+[0,1,2,3,4]+[y]+[0,1,2,3,4]', raw_coordinate) or re.fullmatch(r'[x]+[E]+[y]+[E]', raw_coordinate)):
             raw_coordinate = input("Invalid coordinate, please try again : ")
 
@@ -58,7 +60,7 @@ class HumanPlayer(Player):
 
     def move_to_coordinate(self) -> Coordinate:
         raw_coordinate = input(
-            "Enter the coordinate of the piece you want to move to, eg = x4y2 : ")
+            "Enter the coordinate you want to move the piece to, eg = x4y2 : ")
         while not re.fullmatch(r'[x]+[0,1,2,3,4]+[y]+[0,1,2,3,4]', raw_coordinate):
             raw_coordinate = input("Invalid coordinate, please try again : ")
 
@@ -67,9 +69,10 @@ class HumanPlayer(Player):
 
         return from_coordinate
 
-    def move(self) -> Movement:
+    def move(self, board: Board) -> Movement:
         from_coordinate = self.move_from_coordinate()
         to_coordinate = self.move_to_coordinate()
+        print()
         return Movement(from_coordinate, to_coordinate)
 
 
@@ -85,8 +88,8 @@ class MachinePlayer(Player):
     def print_player(self):
         super().print_player()
 
-    def move(self) -> Movement:
-        pass
+    def move(self, board: Board) -> Movement:
+        return Movement(Coordinate(0, 0), Coordinate(0, 0))
 
     def get_name(self):
         return super().get_name()

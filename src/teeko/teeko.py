@@ -39,17 +39,29 @@ class Teeko(Game):
         
 
     def _introduce_game(self):
-        print("Welcome to Teeko")
+        print("Welcome to Teeko\n")
 
     def _initialise_player(self):
-        print("Initialise player")
+        print("Setting up players\n")
+        print("Set up player a")
+        self.players = {}
         player_a = HumanPlayer()
+        print()
+        print("Set up player b")
         player_b = HumanPlayer()
+        while player_a._name == player_b._name:
+            print("Oops, player a and player b cannot have the same name. Please try again")
+            player_b = HumanPlayer()
+        print()
         self.set_black_player(player_a)
         self.set_red_player(player_b)
+        print("Awsome! Players are set up")
+        print("The game will start with player a\n")
+        
 
     def _initilise_board(self):
-        print("Initialise board")
+        print("The game board is set up")
+        print("The board is empty\n")
         self.board = Board()
         self.board.display()
 
@@ -74,20 +86,23 @@ class Teeko(Game):
         print("Winner is {}".format(self._winner.get_name()))
         
     def play_turn(self, player: Player):
-        player.print_player()
+        print("Your turn player : "+player.get_name())
         player_piece_color = self.get_player_color(player)
         player_piece = color_to_piece(player_piece_color)
         
-        player_movement = player.move()
+        player_movement = player.move(self.board)
         player_movement.set_piece_color(player_piece)
         while not player_movement.is_legal_movement(self.board):
-            player_movement = player.move()
+            player_movement = player.move(self.board)
             player_movement.set_piece_color(player_piece)
 
         self.board.move_piece(player_movement)
 
     def play_game(self):
-        print("Play game")
+        if not len(self.players) == 2:
+            print("Players are not set up\n")
+            self._initialise_player()
+        print("Let's play Teeko\n")
         next_player = self.get_black_player()
         while not self.is_game_over():
             self.play_turn(next_player)
@@ -100,6 +115,9 @@ class Teeko(Game):
 
 
         self.print_winner()
+    
+    def get_players(self) -> List[Player]:
+        return list(self.players.values())
 
     def get_black_player(self) -> Player:
         return self.players[TeekoColorEnum.BLACK_COLOR]
@@ -115,15 +133,23 @@ class Teeko(Game):
 
     def set_player(self, player: Player, color:TeekoColorEnum):
         if(color not in self.players.keys()):
+            if len(self.players) == 2:
+                print("Players are already set up\n")
+                return
+            if len(self.players) == 1:
+                if player._name == self.get_players()[0].get_name():
+                    print("Player is already set up with the same name\n")
+                    return
             self.players[color] = player
         else:
-            print("Player already exist")
+            print("Player already exist\n")
         
-    def get_player_color(self, player: Player) -> TeekoColorEnum:
+    def get_player_color(self, player: Player) -> Optional[TeekoColorEnum]:
         for color, p in self.players.items():
             if p == player:
                 return color
-        raise Exception("Player not found")
+        print("Player not found\n")
+        return None
 
     
 

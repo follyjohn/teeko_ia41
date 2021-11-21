@@ -26,8 +26,8 @@ class Position:
         return Coordinate(self._abs, self._ord)
 
     @staticmethod
-    def eucludian_distance(coord1: Coordinate, coord2: Coordinate) -> int:
-        return math.sqrt((math.pow(abs(coord1.get_x - coord2.get_x), 2) + math.pow(abs(coord1.get_y - coord2.get_y), 2)))
+    def eucludian_distance(coord1: Coordinate, coord2: Coordinate) -> float:
+        return math.sqrt(math.pow((coord1.get_x - coord2.get_x), 2) + math.pow((coord1.get_y - coord2.get_y), 2))
 
     @staticmethod
     def manhattan_distance(coord1: Coordinate, coord2: Coordinate) -> int:
@@ -45,11 +45,11 @@ class Position:
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a.get_x == b.get_x or a.get_y == b.get_y:
-                    if Position.eucludian_distance(a, b) == 1:
+                    if Position.manhattan_distance(a, b) == 1:
                         continue
                     else:
                         return False
-                elif not(a.get_x == b.get_y and a.get_y == b.get_x):
+                elif a.get_x != b.get_y and a.get_y != b.get_x:
                     return False
 
         return True

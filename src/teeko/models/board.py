@@ -1,6 +1,5 @@
 from typing import List, Optional, Dict, Any
 from teeko.models.coordinate import Coordinate
-# from teeko.models.movement import Movement
 from teeko.models.position import Position
 from teeko.models.teeko_piece import TeekoPieceEnum
 from teeko.models.teeko_color import TeekoColorEnum, color_to_piece, piece_to_color
@@ -44,11 +43,14 @@ class Board:
                 positions.append(p)
         return positions
 
+    def get_piece_at_coordinate(self, abs: int, obs: int) -> TeekoPieceEnum:
+        return self.get_position(abs, obs).get_piece
+
     def display(self):
         for x in range(self.size):
             print("| ", end="")
             for y in range(self.size):
-                p = [p for p in self.positions if p.get_abs == x and p.get_ord == y][0]
+                p = self.get_position(y,x)
                 print(p.get_piece.value, end=" | ")
             print()
         print()
