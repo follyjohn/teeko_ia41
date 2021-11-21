@@ -13,7 +13,7 @@ def color_to_piece(color: TeekoColorEnum) -> TeekoPieceEnum:
     elif color == TeekoColorEnum.RED_COLOR:
         return TeekoPieceEnum.RED_PIECE
     else:
-        raise Exception("Color not found")
+        raise ValueError("Color not found")
 
 def piece_to_color(piece: TeekoPieceEnum) -> TeekoColorEnum:
     if piece == TeekoPieceEnum.BLACK_PIECE:
@@ -21,4 +21,4 @@ def piece_to_color(piece: TeekoPieceEnum) -> TeekoColorEnum:
     elif piece == TeekoPieceEnum.RED_PIECE:
         return TeekoColorEnum.RED_COLOR
     else:
-        raise Exception("Piece not found")
+        raise ValueError("Piece not found")

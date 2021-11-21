@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from teeko.models.player.human_player import HumanPlayer
 from teeko.models.board import Board
 
-from teeko.models.player.player import HumanPlayer, Player
+from teeko.models.player.player import Player
 from teeko.models.position import Position
 from teeko.models.teeko_color import TeekoColorEnum, color_to_piece
 from teeko.models.teeko_piece import TeekoPieceEnum
@@ -73,11 +74,13 @@ class Teeko(Game):
         if len(black_pieces) == 4:
             if Position.is_positions_square(black_pieces) or Position.is_positions_straight_line(black_pieces) or Position.is_positions_oblique_line(black_pieces):
                 self._winner = self.get_black_player()
+                print("Game over!")
                 return True
             
         if len(red_pieces) == 4:
             if Position.is_positions_square(red_pieces) or Position.is_positions_straight_line(red_pieces) or Position.is_positions_oblique_line(red_pieces):
                 self._winner = self.get_red_player()
+                print("Game over!")
                 return True
             
         return False
@@ -115,6 +118,7 @@ class Teeko(Game):
 
 
         self.print_winner()
+
     
     def get_players(self) -> List[Player]:
         return list(self.players.values())

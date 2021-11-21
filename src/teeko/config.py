@@ -7,4 +7,4 @@ class TeekoConfig(Enum):
     BOARD_DEFAULT_PIECE_COUNT_PER_PLAYER = 4
     
     COORDINATE_REGEX_PATTERN = r'[x]+[0,1,2,3,4]+[y]+[0,1,2,3,4]'
-    REGEX_PATTERN = r'[xEyE]'
+    REGEX_PATTERN = r'[x]+[E]+[y]+[E]'
