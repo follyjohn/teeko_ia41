@@ -9,6 +9,8 @@
             
 """
 import re
+from typing import List
+from teeko.models.teeko_color import TeekoColorEnum
 
 from teeko.models.board import Board
 from teeko.models.coordinate import Coordinate
@@ -37,3 +39,9 @@ class IAPlayer(Player):
 
     def get_name(self):
         return super().get_name()
+
+    # Generate next possible moves form one state (state -> states)
+    def generate_next_movements(self, board: Board, color: TeekoColorEnum) -> List[Movement]:
+        movements = []
+
+    
