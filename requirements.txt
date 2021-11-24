@@ -4,6 +4,7 @@ charset-normalizer==2.0.7
 idna==3.3
 panda==0.3.1
 pycodestyle==2.8.0
+pygame==2.1.0
 requests==2.26.0
 toml==0.10.2
 urllib3==1.26.7
