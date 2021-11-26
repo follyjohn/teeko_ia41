@@ -1,18 +1,18 @@
 import pygame
 
+pygame.init()
 
-def main():
-    screen = pygame.display.set_mode((640, 480))
-    clock = pygame.time.Clock()
-    while True:
-        events = pygame.event.get()
-        for e in events:
-            if e.type == pygame.QUIT:
-                return
-        screen.fill(pygame.Color('grey'))
-        pygame.display.flip()
-        clock.tick(60)
+ecran = pygame.display.set_mode((700, 700))
+image = pygame.image.load("src/teeko/view/teeko_board.png").convert_alpha()
 
+continuer = True
 
-if __name__ == '__main__':
-    main()
+while continuer:
+    ecran.fill((255, 255, 255))
+    ecran.blit(image, (0, 50))
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            continuer = False
+    pygame.display.flip()
+
+pygame.quit()
