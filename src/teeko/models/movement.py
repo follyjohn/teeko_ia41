@@ -6,6 +6,7 @@ from teeko.models.coordinate import Coordinate
 from teeko.models.teeko_color import piece_to_color
 from teeko.models.teeko_piece import TeekoPieceEnum
 
+
 class Movement:
 
     def __init__(self, origin_coord: Coordinate, destination_coord: Coordinate):
@@ -34,11 +35,8 @@ class Movement:
     def is_new_piece_movement(self) -> bool:
         return self.get_origin_coord.get_x == -1 and self.get_origin_coord.get_y == -1
 
-
-
     def __str__(self):
         return "Movement: " + self._origin_coord.__str__() + " -> " + self._destination_coord.__str__()
-
 
     def is_legal_movement(self, board: Board) -> bool:
         if self.get_piece_color is None:
@@ -46,10 +44,12 @@ class Movement:
             return False
         elif self.is_new_piece_movement() and board.get_remaining_pieces_by_color(piece_to_color(self.get_piece_color)) == 0:
             print("No more pieces of this color")
+            return False
         elif not self.is_new_piece_movement():
-            if Position.manhattan_distance(self.get_origin_coord, self.get_destination_coord) != 1:
-                print("Movement is not a single step")
-                return False
+            if Position.manhattan_distance(self.get_origin_coord, self.get_destination_coord) > 1:
+                if Position.eucludian_distance(self.get_origin_coord, self.get_destination_coord) > 1.5:
+                    print("Movement is not a single step")
+                    return False
             if board.get_remaining_pieces_by_color(piece_to_color(self.get_piece_color)) > 0:
                 print("Piece color not empty")
                 return False
@@ -62,7 +62,7 @@ class Movement:
             elif board.get_piece_at_coordinate(self.get_origin_coord) != self.get_piece_color:
                 print("The piece at position is not yours")
                 return False
-        elif not board.get_piece_at_coordinate(self.get_destination_coord) == TeekoPieceEnum.EMPTY_PIECE:
+        if not board.get_piece_at_coordinate(self.get_destination_coord) == TeekoPieceEnum.EMPTY_PIECE:
             print("Destination not empty")
             return False
 
