@@ -40,7 +40,7 @@ class Position:
 
     @staticmethod
     def is_positions_square(positions: list) -> bool:
-        if len(positions) < 4:
+        if len(positions) != 4:
             return False
         positions_coordinates = Position.get_coordinate_from_positions(
             positions)
