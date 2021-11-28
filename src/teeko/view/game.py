@@ -8,7 +8,7 @@ image = pygame.image.load("src/teeko/view/teeko_board.png").convert_alpha()
 image = pygame.transform.scale(image, (720, 720))
 
 
-def get_square_under_mouse(board):
+def get_square_under_mouse(board): # gest mouse position #TODO
     mouse_pos = pygame.Vector2(pygame.mouse.get_pos()) - (70,70)
     x, y = [int(v // 70) for v in mouse_pos]
     try:
