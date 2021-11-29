@@ -78,13 +78,13 @@ def update_board(surface, positions, board: Board):
     for i in range(TEEKO_BOARD_SIZE):
         for j in range(TEEKO_BOARD_SIZE):
             try:
-                positions[i][j].set_color(board.get_position_at_coordinate(Coordinate(i, j)).get_piece.value)
-                if positions[i][j].color == TeekoPieceEnum.BLACK_PIECE.value:
+                positions[j][i].set_color(board.get_position_at_coordinate(Coordinate(i, j)).get_piece.value)
+                if positions[j][i].color == TeekoPieceEnum.BLACK_PIECE.value:
                     pygame.draw.circle(
-                        surface, 'black', (positions[i][j].abs_pos, positions[i][j].ord_pos), 40)
-                elif positions[i][j].color == TeekoPieceEnum.RED_PIECE.value:
+                        surface, 'black', (positions[j][i].abs_pos, positions[j][i].ord_pos), 40)
+                elif positions[j][i].color == TeekoPieceEnum.RED_PIECE.value:
                     pygame.draw.circle(
-                        surface, 'red', (positions[i][j].abs_pos, positions[i][j].ord_pos), 40)
+                        surface, 'red', (positions[j][i].abs_pos, positions[j][i].ord_pos), 40)
             except IndexError:
                 pass
 
@@ -98,9 +98,9 @@ def get_piece_under_mouse(positions: List[TeekooPiece]):
         if x >= 0 and y >= 0:
             for i in range(TEEKO_BOARD_SIZE):
                 for j in range(TEEKO_BOARD_SIZE):
-                    if x <= positions[i][j].abs_pos + 30 and x >= positions[i][j].abs_pos-30 and y <= positions[i][j].ord_pos + 30 and y >= positions[i][j].ord_pos - 30:
-                        if positions[i][j].color is not None:
-                            return positions[i][j]
+                    if x <= positions[j][i].abs_pos + 30 and x >= positions[j][i].abs_pos-30 and y <= positions[j][i].ord_pos + 30 and y >= positions[j][i].ord_pos - 30:
+                        if positions[j][i].color is not None:
+                            return positions[j][i]
     except IndexError:
         pass
     return None
@@ -115,7 +115,7 @@ def get_piece_clicked(positions: List[TeekooPiece], board: Board):
             if x >= 0 and y >= 0:
                 for i in range(TEEKO_BOARD_SIZE):
                     for j in range(TEEKO_BOARD_SIZE):
-                        if x <= positions[i][j].abs_pos + 30 and x >= positions[i][j].abs_pos-30 and y <= positions[i][j].ord_pos + 30 and y >= positions[i][j].ord_pos - 30:
+                        if x <= positions[j][i].abs_pos + 30 and x >= positions[j][i].abs_pos-30 and y <= positions[j][i].ord_pos + 30 and y >= positions[j][i].ord_pos - 30:
                             return board.get_position_at_coordinate(Coordinate(i, j))
         except IndexError:
             pass
