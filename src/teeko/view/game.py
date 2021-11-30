@@ -1,5 +1,6 @@
 from typing import List
 import pygame
+import copy
 from pygame.draw import circle
 from teeko.models.movement import Movement
 from teeko.models.teeko_color import TeekoColorEnum
@@ -181,23 +182,29 @@ while continuer:
             continuer = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             selected_piece = get_piece_clicked(positions, board)
+            
             if selected_piece != None:
                 if selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
                     print("empty")
                     mouvement = Movement(Coordinate(-1, -1), selected_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
                     if mouvement.is_legal_movement(board):
                         board.move_piece(mouvement)
+                        old_position = copy.deepcopy(selected_piece)
+                        selected_piece = None
                 else:
                     if neighor_pieces is not None:
-                        if selected_piece in neighor_pieces:
-                            new_piece = get_piece_clicked(positions, board)
-                            board.move_piece(Movement(
-                                selected_piece.get_coordinate(), new_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE))
+                        new_piece = get_piece_clicked(positions, board)
+                        mouvement = Movement(
+                            old_position.get_coordinate(), new_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
+                        if mouvement.is_legal_movement(board):
+                            board.move_piece(mouvement)
                             neighor_pieces = None
                             selected_piece = None
+                            old_position = None
                     else :
                         neighor_pieces = board.get_neighbors_empty(
                             selected_piece.get_abs, selected_piece.get_ord)
+                        old_position = copy.deepcopy(selected_piece)
                         blink_positions(neighor_pieces, positions, ecran)
 
 

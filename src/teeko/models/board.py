@@ -51,6 +51,9 @@ class Board:
             TeekoColorEnum.RED_COLOR))
         print()
 
+    def decrement_remaining_pieces(self, color: TeekoColorEnum):
+        self._remaining_pieces[color] -= 1
+
     def move_piece(self, movement):  # TODO:type movement
         if not movement.is_new_piece_movement():
             self.get_position_at_coordinate(
