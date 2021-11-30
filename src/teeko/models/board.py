@@ -4,15 +4,13 @@ from teeko.models.position import Position
 from teeko.models.teeko_piece import TeekoPieceEnum
 from teeko.models.teeko_color import TeekoColorEnum, color_to_piece, piece_to_color
 
+
 class Board:
 
     def __init__(self, size: int = 5, piece_count: int = 4):
         self._size = size
         self._piece_count = piece_count
         self._positions = self.generate()
-        self._remaining_pieces = {}
-        self._remaining_pieces[TeekoColorEnum.BLACK_COLOR] = self._piece_count
-        self._remaining_pieces[TeekoColorEnum.RED_COLOR] = self._piece_count
 
     @property
     def size(self) -> int:
@@ -22,18 +20,8 @@ class Board:
     def positions(self) -> List[Position]:
         return self._positions
 
-    def get_remaining_pieces(self) -> Dict[TeekoColorEnum, int]:
-        return self._remaining_pieces
-
-    def get_remaining_pieces_by_color(self, color: TeekoColorEnum) -> int:
-        return self._remaining_pieces[color]
-
-    @property
     def piece_count(self) -> int:
         return self._piece_count
-
-    def decrement_remaining_pieces(self, color: TeekoColorEnum):
-        self._remaining_pieces[color] -= 1       
 
     def generate(self):
         positions: List[Position] = []
@@ -50,24 +38,26 @@ class Board:
         for x in range(self.size):
             print("| ", end="")
             for y in range(self.size):
-                p = self.get_position(y,x)
+                p = self.get_position(y, x)
                 print(p.get_piece.value, end=" | ")
             print()
         print()
 
         print("Remaining pieces:")
-        
-        print("Black:", self.get_remaining_pieces_by_color(TeekoColorEnum.BLACK_COLOR))
-        print("Red:", self.get_remaining_pieces_by_color(TeekoColorEnum.RED_COLOR))
+
+        print("Black:", self.get_remaining_pieces_by_color(
+            TeekoColorEnum.BLACK_COLOR))
+        print("Red:", self.get_remaining_pieces_by_color(
+            TeekoColorEnum.RED_COLOR))
         print()
 
-    def move_piece(self, movement): #TODO:type movement
-        if movement.is_new_piece_movement():
-            self.decrement_remaining_pieces(piece_to_color(movement.get_piece_color))
-        else:
-            self.get_position_at_coordinate(movement.get_origin_coord).set_piece(TeekoPieceEnum.EMPTY_PIECE)
+    def move_piece(self, movement):  # TODO:type movement
+        if not movement.is_new_piece_movement():
+            self.get_position_at_coordinate(
+                movement.get_origin_coord).set_piece(TeekoPieceEnum.EMPTY_PIECE)
 
-        self.get_position_at_coordinate(movement.get_destination_coord).set_piece(movement.get_piece_color)
+        self.get_position_at_coordinate(
+            movement.get_destination_coord).set_piece(movement.get_piece_color)
 
     def get_position(self, x: int, y: int) -> Position:
         return [p for p in self._positions if p.get_abs == x and p.get_ord == y][0]
@@ -89,15 +79,18 @@ class Board:
     def get_pieces_positions_list(self) -> List[Position]:
         pieces_positions: List[Position] = []
         for p in self._positions:
-            if p.piece.value != TeekoPieceEnum.EMPTY_PIECE.value:
+            if p.get_piece.value != TeekoPieceEnum.EMPTY_PIECE.value:
                 pieces_positions.append(p)
         return pieces_positions
 
     def get_positions_by_color(self, color: TeekoColorEnum) -> List[Position]:
-        return [p for p in self._positions if p.get_piece ==  color_to_piece(color)]
+        return [p for p in self._positions if p.get_piece == color_to_piece(color)]
 
     def get_empty_positions(self) -> List[Position]:
-        return [p for p in self._positions if p.piece.value == TeekoPieceEnum.EMPTY_PIECE.value]
+        return [p for p in self._positions if p.get_piece == TeekoPieceEnum.EMPTY_PIECE]
+
+    def get_empty_positions_coordinate(self) -> List[Coordinate]:
+      return Position.get_coordinates_from_positions(self.get_empty_positions())
 
     def get_neighbors(self, x: int, y: int) -> List[Position]:
         neighbors: List[Position] = []
@@ -134,4 +127,13 @@ class Board:
 
         return neighbors
 
-    
+    def piece_count_by_color(self, color: TeekoColorEnum) -> int:
+        return len(self.get_positions_by_color(color))
+
+    def get_piece_count(self, piece: TeekoPieceEnum) -> int:
+        if piece == TeekoPieceEnum.EMPTY_PIECE:
+            return len(self.get_empty_positions())
+        return self.piece_count_by_color(piece_to_color(piece))
+
+    def get_remaining_pieces_by_color(self, color: TeekoColorEnum) -> int:
+        return self._piece_count - self.piece_count_by_color(color)

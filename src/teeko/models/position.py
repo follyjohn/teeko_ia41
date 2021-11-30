@@ -3,6 +3,7 @@ from teeko.models.coordinate import Coordinate
 from teeko.models.teeko_piece import TeekoPieceEnum
 import math
 
+
 class Position:
 
     def __init__(self, abs: int, ord: int, piece: TeekoPieceEnum):
@@ -39,9 +40,10 @@ class Position:
 
     @staticmethod
     def is_positions_square(positions: list) -> bool:
-        if len(positions) < 4:
+        if len(positions) != 4:
             return False
-        positions_coordinates = Position.get_coordinate_from_positions(positions)
+        positions_coordinates = Position.get_coordinate_from_positions(
+            positions)
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a.get_x == b.get_x or a.get_y == b.get_y:
@@ -56,7 +58,8 @@ class Position:
     def is_positions_straight_line(positions: list) -> bool:
         if len(positions) < 4:
             return False
-        positions_coordinates = Position.get_coordinate_from_positions(positions)
+        positions_coordinates = Position.get_coordinate_from_positions(
+            positions)
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a.get_x == b.get_x or a.get_y == b.get_y:
@@ -71,18 +74,16 @@ class Position:
     def is_positions_oblique_line(positions: list) -> bool:
         if len(positions) < 4:
             return False
-        positions_coordinates = Position.get_coordinate_from_positions(positions)
+        positions_coordinates = Position.get_coordinate_from_positions(
+            positions)
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if (a.get_x == b.get_x and a.get_y != b.get_y) or (a.get_y == b.get_y and a.get_x != b.get_x):
                     return False
                 elif Position.manhattan_distance(a, b) > 6:
-                    print("dd")
                     return False
 
         return True
-                
 
     def set_piece(self, piece: TeekoPieceEnum):
         self._piece = piece
-

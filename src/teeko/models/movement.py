@@ -14,6 +14,11 @@ class Movement:
         self._destination_coord = destination_coord
         self._piece_color = None
 
+    def __init__(self, origin_coord: Coordinate, destination_coord: Coordinate, piece_color: TeekoPieceEnum):
+        self._origin_coord = origin_coord
+        self._destination_coord = destination_coord
+        self._piece_color = piece_color
+
     @property
     def get_piece_color(self) -> TeekoPieceEnum:
         return self._piece_color
