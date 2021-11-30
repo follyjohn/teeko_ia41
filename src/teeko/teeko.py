@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from teeko.models.player.Alan import Alan
 from teeko.models.player.human_player import HumanPlayer
 from teeko.models.board import Board
 
@@ -49,7 +50,7 @@ class Teeko(Game):
         player_a = HumanPlayer()
         print()
         print("Set up player b")
-        player_b = HumanPlayer()
+        player_b = Alan()
         while player_a._name == player_b._name:
             print("Oops, player a and player b cannot have the same name. Please try again")
             player_b = HumanPlayer()
@@ -91,13 +92,10 @@ class Teeko(Game):
     def play_turn(self, player: Player):
         print("Your turn player : "+player.get_name())
         player_piece_color = self.get_player_color(player)
-        player_piece = color_to_piece(player_piece_color)
         
-        player_movement = player.move(self.board)
-        player_movement.set_piece_color(player_piece)
+        player_movement = player.move(self.board, player_piece_color)
         while not player_movement.is_legal_movement(self.board):
-            player_movement = player.move(self.board)
-            player_movement.set_piece_color(player_piece)
+            player_movement = player.move(self.board, player_piece_color)
 
         self.board.move_piece(player_movement)
 

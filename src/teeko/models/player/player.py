@@ -11,6 +11,7 @@
 """
 import re
 from abc import ABC, abstractmethod
+from teeko.models.teeko_color import TeekoColorEnum
 
 from teeko.models.board import Board
 from teeko.models.movement import Movement
@@ -46,7 +47,7 @@ class Player(ABC):
         Movement: Movement object containing the coordinates of the movement.
     """
     @abstractmethod
-    def move(self, board: Board) -> Movement:
+    def move(self, board: Board, color: TeekoColorEnum) -> Movement:
         pass
 
 

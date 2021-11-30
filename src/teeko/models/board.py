@@ -93,7 +93,7 @@ class Board:
         return [p for p in self._positions if p.get_piece == TeekoPieceEnum.EMPTY_PIECE]
 
     def get_empty_positions_coordinate(self) -> List[Coordinate]:
-      return Position.get_coordinates_from_positions(self.get_empty_positions())
+      return Position.get_coordinate_from_positions(self.get_empty_positions())
 
     def get_neighbors(self, x: int, y: int) -> List[Position]:
         neighbors: List[Position] = []

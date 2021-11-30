@@ -11,6 +11,7 @@
 import re
 import copy
 from typing import List
+from teeko.models.teeko_color import color_to_piece
 from teeko.models.position import Position
 from teeko.models.teeko_color import TeekoColorEnum
 
@@ -32,12 +33,14 @@ class IAPlayer(Player):
     def print_player(self):
         super().print_player()
 
-    def move(self, board: Board) -> Movement:  # TODO: implement the minimax algorithm
+    # TODO: implement the minimax algorithm
+    def move(self, board: Board, color: TeekoColorEnum) -> Movement:
         pass
 
     def get_name(self):
         return super().get_name()
 
+    # Generate next possible moves form one state (state -> states)
     # Generate next possible moves form one state (state -> states)
     @staticmethod
     def generate_next_movements(board: Board, color: TeekoColorEnum) -> List[Movement]:

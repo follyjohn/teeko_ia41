@@ -9,6 +9,8 @@
     
 """
 import re
+from teeko.models.teeko_color import color_to_piece
+from teeko.models.teeko_color import TeekoColorEnum
 
 from teeko.models.board import Board
 from teeko.models.coordinate import Coordinate
@@ -85,8 +87,9 @@ class HumanPlayer(Player):
         We ask the user for the coordinate of the piece he wants to move.
         And then ask the user for the coordinate of the piece he wants to move to.
     """
-    def move(self, board: Board) -> Movement:
+
+    def move(self, board: Board, color: TeekoColorEnum) -> Movement:
         from_coordinate = self.move_from_coordinate()
         to_coordinate = self.move_to_coordinate()
         print()
-        return Movement(from_coordinate, to_coordinate)
+        return Movement(from_coordinate, to_coordinate, color_to_piece(color))
