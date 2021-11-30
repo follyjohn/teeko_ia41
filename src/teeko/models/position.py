@@ -23,6 +23,7 @@ class Position:
     def get_piece(self) -> TeekoPieceEnum:
         return self._piece
 
+
     def get_coordinate(self) -> Coordinate:
         return Coordinate(self._abs, self._ord)
 
