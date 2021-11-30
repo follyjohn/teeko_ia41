@@ -110,7 +110,7 @@ class Board:
                     continue
                 if x + i >= 0 and x + i < self.size and y + j >= 0 and y + j < self.size:
                     p = self.get_position(x + i, y + j)
-                    if p.piece.value == TeekoPieceEnum.EMPTY_PIECE.value:
+                    if p.get_piece == TeekoPieceEnum.EMPTY_PIECE:
                         neighbors.append(p)
         return neighbors
 

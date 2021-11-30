@@ -78,7 +78,8 @@ def update_board(surface, positions, board: Board):
     for i in range(TEEKO_BOARD_SIZE):
         for j in range(TEEKO_BOARD_SIZE):
             try:
-                positions[j][i].set_color(board.get_position_at_coordinate(Coordinate(i, j)).get_piece.value)
+                positions[j][i].set_color(board.get_position_at_coordinate(
+                    Coordinate(i, j)).get_piece.value)
                 if positions[j][i].color == TeekoPieceEnum.BLACK_PIECE.value:
                     pygame.draw.circle(
                         surface, 'black', (positions[j][i].abs_pos, positions[j][i].ord_pos), 40)
@@ -121,6 +122,11 @@ def get_piece_clicked(positions: List[TeekooPiece], board: Board):
             pass
         return None
 
+
+def blink_positions(neighor_pieces: List[Position], positions: List[TeekooPiece], ecran):
+    for ele in neighor_pieces:
+        pygame.draw.circle(
+            ecran, 'red', (positions[ele.get_abs][ele.get_ord].ord_pos, positions[ele.get_abs][ele.get_ord].abs_pos), 38, 4)
 # pygame.draw.circle(image, (0, 0, 0), (127, 127), 35)
 # pygame.draw.circle(image, (0, 0, 0), (242, 127), 35)
 # pygame.draw.circle(image, (0, 0, 0), (242, 243), 35)
@@ -146,6 +152,7 @@ board = Board()
 positions = generate_pieces()
 
 backgroung_image = create_board_surf()
+neighor_pieces = None
 
 
 selected_piece = None
@@ -155,17 +162,19 @@ continuer = True
 while continuer:
     ecran.fill((255, 255, 255))
     ecran.blit(backgroung_image, (0, 0))
-    positions =  update_board(ecran, positions, board)
+    positions = update_board(ecran, positions, board)
     event_list = pygame.event.get()
+
+    if neighor_pieces is not None:
+        blink_positions(neighor_pieces, positions, ecran)
 
     # board.display()
 
     piece = get_piece_under_mouse(positions)
     if piece != None:
-        x,y, _ = piece.to_tuple()
+        x, y, _ = piece.to_tuple()
         pygame.draw.circle(ecran, 'red', (x, y), 40, 2)
     pygame.display.flip()
-
 
     for event in event_list:
         if event.type == pygame.QUIT:
@@ -173,18 +182,23 @@ while continuer:
         if event.type == pygame.MOUSEBUTTONDOWN:
             selected_piece = get_piece_clicked(positions, board)
             if selected_piece != None:
-                if selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE:
-                    board.move_piece(Movement(Coordinate(-1,-1), selected_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE))
-        # if event.type == pygame.MOUSEBUTTONUP:
-        #     if drop_pos:
-        #         piece, old_x, old_y = selected_piece
-        #         board[old_y][old_x] = (
-        #             board[old_y][old_x][0], board[old_y][old_x][1], None)
-        #         new_x, new_y = drop_pos
-        #         board[new_y][new_x] = (
-        #             board[new_y][new_x][0], board[new_y][new_x][1], TeekoPieceEnum.BLACK_PIECE)
-        #     selected_piece = None
-        #     drop_pos = None
-    
+                if selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
+                    print("empty")
+                    mouvement = Movement(Coordinate(-1, -1), selected_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
+                    if mouvement.is_legal_movement(board):
+                        board.move_piece(mouvement)
+                else:
+                    if neighor_pieces is not None:
+                        if selected_piece in neighor_pieces:
+                            new_piece = get_piece_clicked(positions, board)
+                            board.move_piece(Movement(
+                                selected_piece.get_coordinate(), new_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE))
+                            neighor_pieces = None
+                            selected_piece = None
+                    else :
+                        neighor_pieces = board.get_neighbors_empty(
+                            selected_piece.get_abs, selected_piece.get_ord)
+                        blink_positions(neighor_pieces, positions, ecran)
+
 
 pygame.quit()
