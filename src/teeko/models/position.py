@@ -86,5 +86,9 @@ class Position:
 
         return True
 
+    @staticmethod
+    def position_is_winning_position(positions: list) -> bool:
+        return Position.is_positions_square(positions) or Position.is_positions_straight_line(positions) or Position.is_positions_oblique_line(positions)
+
     def set_piece(self, piece: TeekoPieceEnum):
         self._piece = piece

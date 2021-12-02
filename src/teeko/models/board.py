@@ -34,6 +34,15 @@ class Board:
     def get_piece_at_coordinate(self, abs: int, obs: int) -> TeekoPieceEnum:
         return self.get_position(abs, obs).get_piece
 
+    def is_game_over(self) -> bool:
+        if self.piece_count_by_color(TeekoColorEnum.BLACK_COLOR) > 0 or self.piece_count_by_color(TeekoColorEnum.RED_COLOR) > 0:
+            return False
+
+        red_positions = self.get_positions_by_color(TeekoColorEnum.RED_COLOR)
+        black_positions = self.get_positions_by_color(TeekoColorEnum.BLACK_COLOR)
+
+        return Position.position_is_winning_position(red_positions) or Position.position_is_winning_position(black_positions)
+
     def display(self):
         for x in range(self.size):
             print("| ", end="")

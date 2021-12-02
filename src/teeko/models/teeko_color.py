@@ -27,6 +27,15 @@ def color_to_piece(color: TeekoColorEnum) -> TeekoPieceEnum:
         raise ValueError("Color not found")
 
 
+def get_opponent(color: TeekoColorEnum) -> TeekoColorEnum:
+    if color == TeekoColorEnum.BLACK_COLOR:
+        return TeekoColorEnum.RED_COLOR
+    elif color == TeekoColorEnum.RED_COLOR:
+        return TeekoColorEnum.BLACK_COLOR
+    else:
+        raise ValueError("Color not found")
+
+
 """
     piece_to_color_str: return the color corresponding to the piece
 """
