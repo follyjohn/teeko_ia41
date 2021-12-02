@@ -1,7 +1,11 @@
+from os import times
 from typing import List
 import pygame
 import copy
+import time
 from pygame.draw import circle
+from teeko.models.teeko_color import color_to_piece
+from teeko.models.teeko_color import get_opponent
 from teeko.models.teeko_color import piece_to_color
 from teeko.models.movement import Movement
 from teeko.models.teeko_color import TeekoColorEnum
@@ -125,10 +129,10 @@ def get_piece_clicked(positions: List[TeekooPiece], board: Board):
         return None
 
 
-def blink_positions(neighor_pieces: List[Position], positions: List[TeekooPiece], ecran):
+def blink_positions(neighor_pieces: List[Position], positions: List[TeekooPiece], ecran, color: TeekoColorEnum):
     for ele in neighor_pieces:
         pygame.draw.circle(
-            ecran, 'red', (positions[ele.get_abs][ele.get_ord].ord_pos, positions[ele.get_abs][ele.get_ord].abs_pos), 38, 4)
+            ecran, color.value, (positions[ele.get_abs][ele.get_ord].ord_pos, positions[ele.get_abs][ele.get_ord].abs_pos), 38, 4)
 # pygame.draw.circle(image, (0, 0, 0), (127, 127), 35)
 # pygame.draw.circle(image, (0, 0, 0), (242, 127), 35)
 # pygame.draw.circle(image, (0, 0, 0), (242, 243), 35)
@@ -155,27 +159,30 @@ positions = generate_pieces()
 
 backgroung_image = create_board_surf()
 neighor_pieces = None
-
-
 selected_piece = None
 drop_pos = None
+player_color = TeekoColorEnum.BLACK_COLOR
 
 continuer = True
 while continuer:
+    if board.is_game_over():
+        positions = update_board(ecran, positions, board)
+        continuer = False
     ecran.fill((255, 255, 255))
     ecran.blit(backgroung_image, (0, 0))
     positions = update_board(ecran, positions, board)
+
     event_list = pygame.event.get()
 
     if neighor_pieces is not None:
-        blink_positions(neighor_pieces, positions, ecran)
+        blink_positions(neighor_pieces, positions, ecran, player_color)
 
     # board.display()
 
     piece = get_piece_under_mouse(positions)
     if piece != None:
         x, y, _ = piece.to_tuple()
-        pygame.draw.circle(ecran, 'red', (x, y), 40, 2)
+        pygame.draw.circle(ecran, player_color.value, (x, y), 40, 2)
     pygame.display.flip()
 
     for event in event_list:
@@ -183,16 +190,19 @@ while continuer:
             continuer = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             selected_piece = get_piece_clicked(positions, board)
-            
+
             if selected_piece != None:
                 if selected_piece.get_piece.value != TeekoPieceEnum.EMPTY_PIECE.value and board.get_remaining_pieces_by_color(piece_to_color(selected_piece.get_piece)) > 0:
-                        selected_piece = None
-                        old_position = None
-                        neighor_pieces = None
+                    selected_piece = None
+                    old_position = None
+                    neighor_pieces = None
                 elif selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
-                    mouvement = Movement(Coordinate(-1, -1), selected_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
+                    mouvement = Movement(
+                        Coordinate(-1, -1), selected_piece.get_coordinate(), color_to_piece(player_color))
                     if mouvement.is_legal_movement(board):
                         board.move_piece(mouvement)
+                        positions = update_board(ecran, positions, board)
+                        player_color = get_opponent(player_color)
                         old_position = copy.deepcopy(selected_piece)
                         selected_piece = None
                 else:
@@ -204,16 +214,28 @@ while continuer:
                             neighor_pieces = None
                         else:
                             mouvement = Movement(
-                                old_position.get_coordinate(), new_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
+                                old_position.get_coordinate(), new_piece.get_coordinate(), color_to_piece(player_color))
                             if mouvement.is_legal_movement(board):
                                 board.move_piece(mouvement)
+                                positions = update_board(
+                                    ecran, positions, board)
+                                player_color = get_opponent(player_color)
                                 neighor_pieces = None
                                 selected_piece = None
                                 old_position = None
-                    else :
+                    elif player_color == piece_to_color(selected_piece.get_piece):
                         neighor_pieces = board.get_neighbors_empty(
                             selected_piece.get_abs, selected_piece.get_ord)
                         old_position = copy.deepcopy(selected_piece)
-                        blink_positions(neighor_pieces, positions, ecran)
+                        blink_positions(
+                            neighor_pieces, positions, ecran, player_color)
+                    else:
+                        neighor_pieces = None
+                        old_position = None
+                        selected_piece = None
+
+
+if board.is_game_over():
+    time.sleep(5)
 
 pygame.quit()

@@ -35,7 +35,7 @@ class Board:
         return self.get_position(abs, obs).get_piece
 
     def is_game_over(self) -> bool:
-        if self.piece_count_by_color(TeekoColorEnum.BLACK_COLOR) > 0 or self.piece_count_by_color(TeekoColorEnum.RED_COLOR) > 0:
+        if self.piece_count_by_color(TeekoColorEnum.BLACK_COLOR) < 0 or self.piece_count_by_color(TeekoColorEnum.RED_COLOR) < 0:
             return False
 
         red_positions = self.get_positions_by_color(TeekoColorEnum.RED_COLOR)
