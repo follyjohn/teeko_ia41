@@ -2,6 +2,7 @@ from typing import List
 import pygame
 import copy
 from pygame.draw import circle
+from teeko.models.teeko_color import piece_to_color
 from teeko.models.movement import Movement
 from teeko.models.teeko_color import TeekoColorEnum
 from teeko.models.coordinate import Coordinate
@@ -184,8 +185,11 @@ while continuer:
             selected_piece = get_piece_clicked(positions, board)
             
             if selected_piece != None:
-                if selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
-                    print("empty")
+                if selected_piece.get_piece.value != TeekoPieceEnum.EMPTY_PIECE.value and board.get_remaining_pieces_by_color(piece_to_color(selected_piece.get_piece)) > 0:
+                        selected_piece = None
+                        old_position = None
+                        neighor_pieces = None
+                elif selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
                     mouvement = Movement(Coordinate(-1, -1), selected_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
                     if mouvement.is_legal_movement(board):
                         board.move_piece(mouvement)
@@ -194,18 +198,22 @@ while continuer:
                 else:
                     if neighor_pieces is not None:
                         new_piece = get_piece_clicked(positions, board)
-                        mouvement = Movement(
-                            old_position.get_coordinate(), new_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
-                        if mouvement.is_legal_movement(board):
-                            board.move_piece(mouvement)
-                            neighor_pieces = None
+                        if new_piece.get_piece.value == old_position.get_piece.value:
                             selected_piece = None
                             old_position = None
+                            neighor_pieces = None
+                        else:
+                            mouvement = Movement(
+                                old_position.get_coordinate(), new_piece.get_coordinate(), TeekoPieceEnum.RED_PIECE)
+                            if mouvement.is_legal_movement(board):
+                                board.move_piece(mouvement)
+                                neighor_pieces = None
+                                selected_piece = None
+                                old_position = None
                     else :
                         neighor_pieces = board.get_neighbors_empty(
                             selected_piece.get_abs, selected_piece.get_ord)
                         old_position = copy.deepcopy(selected_piece)
                         blink_positions(neighor_pieces, positions, ecran)
-
 
 pygame.quit()

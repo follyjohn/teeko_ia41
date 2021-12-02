@@ -1,38 +1,16 @@
-from abc import ABC, abstractmethod
+
 from enum import Enum
 from typing import Any, Dict, List, Optional
+
+from teeko.models.board import Board
+from teeko.models.game import Game
 from teeko.models.player.Alan import Alan
 from teeko.models.player.human_player import HumanPlayer
-from teeko.models.board import Board
-
 from teeko.models.player.player import Player
 from teeko.models.position import Position
 from teeko.models.teeko_color import TeekoColorEnum, color_to_piece
 from teeko.models.teeko_piece import TeekoPieceEnum
 
-class Game:
-
-    def __init__(self):
-        self.players = {}
-        self._winner: Player = None
-        self._introduce_game()
-        self._initialise_player()
-        self._initilise_board()
-
-    @staticmethod
-    @abstractmethod
-    def _introduce_game(self):
-        ...
-
-    @staticmethod
-    @abstractmethod
-    def _initialise_player(self):
-        ...
-
-    @staticmethod
-    @abstractmethod
-    def _initilise_board(self):
-        ...
 
 class Teeko(Game):
 
