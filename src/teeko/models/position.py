@@ -77,12 +77,16 @@ class Position:
             return False
         positions_coordinates = Position.get_coordinate_from_positions(
             positions)
+        c = 0
         for a in positions_coordinates:
             for b in positions_coordinates:
-                if (a.get_x == b.get_x and a.get_y != b.get_y) or (a.get_y == b.get_y and a.get_x != b.get_x):
-                    return False
-                elif Position.manhattan_distance(a, b) > 6:
-                    return False
+                if a != b:
+                    if a.get_x == b.get_x  or a.get_y == b.get_y:
+                        return False
+                    elif Position.manhattan_distance(a, b) > 2:
+                        c+=1
+                        if c > 4:
+                            return False
 
         return True
 

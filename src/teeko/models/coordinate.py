@@ -64,3 +64,6 @@ class Coordinate:
                 self.get_x - 1, self.get_y + 1, next_coordinates)
 
         return next_coordinates
+
+    def __str__(self) -> str:
+        return "(" + str(self.get_x) + "," + str(self.get_y) + ")"

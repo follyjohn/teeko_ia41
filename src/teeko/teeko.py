@@ -1,6 +1,7 @@
 
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from teeko.models.player.Justine import Justine
 
 from teeko.models.board import Board
 from teeko.models.game import Game
@@ -25,7 +26,7 @@ class Teeko(Game):
         print("Setting up players\n")
         print("Set up player a")
         self.players = {}
-        player_a = HumanPlayer()
+        player_a = Justine()
         print()
         print("Set up player b")
         player_b = Alan()
@@ -51,13 +52,13 @@ class Teeko(Game):
         red_pieces = self.board.get_positions_by_color(TeekoColorEnum.RED_COLOR)
 
         if len(black_pieces) == 4:
-            if Position.is_positions_square(black_pieces) or Position.is_positions_straight_line(black_pieces) or Position.is_positions_oblique_line(black_pieces):
+            if Position.position_is_winning_position(black_pieces):
                 self._winner = self.get_black_player()
                 print("Game over!")
                 return True
             
         if len(red_pieces) == 4:
-            if Position.is_positions_square(red_pieces) or Position.is_positions_straight_line(red_pieces) or Position.is_positions_oblique_line(red_pieces):
+            if Position.position_is_winning_position(red_pieces):
                 self._winner = self.get_red_player()
                 print("Game over!")
                 return True
