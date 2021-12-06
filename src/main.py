@@ -5,4 +5,4 @@ from teeko.teeko import Teeko
 
 if __name__ == "__main__":
     teeko = Teeko()
-    teeko.play_game()
+    teeko.play_game()   

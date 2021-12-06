@@ -6,10 +6,11 @@
 
     Description: IA Player class for the game. This class is used to represent an IA player in the game.
     The particularity of this class is that it uses the Minimax algorithm to get the next move from the player.
-            
+
 """
 import re
 import copy
+import pickle
 from typing import List
 from teeko.models.teeko_color import color_to_piece
 from teeko.models.position import Position
@@ -65,7 +66,7 @@ class IAPlayer(Player):
     @staticmethod
     def generate_next_board_state(board: Board, movement: Movement) -> Board:
         if movement.is_legal_movement(board):
-            new_board = copy.deepcopy(board)
+            new_board = pickle.loads(pickle.dumps(board))
             new_board.move_piece(movement)
             return new_board
 

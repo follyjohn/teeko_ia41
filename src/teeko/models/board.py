@@ -1,5 +1,6 @@
 from typing import List, Optional, Dict, Any
 from teeko.models.coordinate import Coordinate
+import copy
 from teeko.models.position import Position
 from teeko.models.teeko_piece import TeekoPieceEnum
 from teeko.models.teeko_color import TeekoColorEnum, color_to_piece, piece_to_color
@@ -12,9 +13,11 @@ class Board:
         self._piece_count = piece_count
         self._positions = self.generate()
 
+
     @property
     def size(self) -> int:
         return self._size
+        
 
     @property
     def positions(self) -> List[Position]:
@@ -149,3 +152,4 @@ class Board:
 
     def get_remaining_pieces_by_color(self, color: TeekoColorEnum) -> int:
         return self._piece_count - self.piece_count_by_color(color)
+

@@ -1,6 +1,7 @@
 
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from teeko.models.player.Nada import Nada
 from teeko.models.player.Justine import Justine
 
 from teeko.models.board import Board
@@ -26,13 +27,13 @@ class Teeko(Game):
         print("Setting up players\n")
         print("Set up player a")
         self.players = {}
-        player_a = Justine()
+        player_a = Nada()
         print()
         print("Set up player b")
         player_b = Alan()
         while player_a.get_name == player_b.get_name:
             print("Oops, player a and player b cannot have the same name. Please try again")
-            player_b = HumanPlayer()
+            player_b = Alan()
         print()
         self.set_black_player(player_a)
         self.set_red_player(player_b)
