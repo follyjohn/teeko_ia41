@@ -81,11 +81,11 @@ class Position:
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a != b:
-                    if a.get_x == b.get_x  or a.get_y == b.get_y:
+                    if a.get_x == b.get_x or a.get_y == b.get_y:
                         return False
                     elif Position.manhattan_distance(a, b) > 2:
-                        c+=1
-                        if c > 4:
+                        c += 1
+                        if c > 6:
                             return False
 
         return True

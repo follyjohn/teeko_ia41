@@ -4,6 +4,7 @@ import pygame
 import copy
 import time
 from pygame.draw import circle
+from teeko.models.player.Justine import Justine
 from teeko.models.teeko_color import color_to_piece
 from teeko.models.teeko_color import get_opponent
 from teeko.models.teeko_color import piece_to_color
@@ -163,6 +164,8 @@ selected_piece = None
 drop_pos = None
 player_color = TeekoColorEnum.BLACK_COLOR
 
+ia = Justine()
+ 
 continuer = True
 while continuer:
     if board.is_game_over():

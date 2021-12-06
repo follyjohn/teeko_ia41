@@ -30,7 +30,7 @@ class Teeko(Game):
         print()
         print("Set up player b")
         player_b = Alan()
-        while player_a._name == player_b._name:
+        while player_a.get_name == player_b.get_name:
             print("Oops, player a and player b cannot have the same name. Please try again")
             player_b = HumanPlayer()
         print()
