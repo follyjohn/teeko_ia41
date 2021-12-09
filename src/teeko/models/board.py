@@ -46,6 +46,9 @@ class Board:
 
         return Position.position_is_winning_position(red_positions) or Position.position_is_winning_position(black_positions)
 
+    def is_color_winning(self, color: TeekoColorEnum) -> bool:
+        return Position.position_is_winning_position(self.get_positions_by_color(color))
+
     def display(self):
         for x in range(self.size):
             print("| ", end="")
