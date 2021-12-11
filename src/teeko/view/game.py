@@ -17,12 +17,12 @@ from teeko.models.position import Position
 from teeko.models.teeko_piece import TeekoPieceEnum
 
 
-TEEKO_BOARD_WIDTH = 720
-TEEKO_BOARD_HEIGHT = 720
-TEEKO_PIECE_CENTER_AXIS_ORIRGIN = 120
-TEEKO_PIECE_CENTER_AXIS_DISTANCE = 120
-TEEKO_PIECE_CENTER_ORDINATE_ORIRGIN = 120
-TEEKO_PIECE_CENTER_ORDINATE_DISTANCE = 120
+TEEKO_BOARD_WIDTH = 704
+TEEKO_BOARD_HEIGHT = 704
+TEEKO_PIECE_CENTER_AXIS_ORIRGIN = 119
+TEEKO_PIECE_CENTER_AXIS_DISTANCE = 116.7
+TEEKO_PIECE_CENTER_ORDINATE_ORIRGIN = 119
+TEEKO_PIECE_CENTER_ORDINATE_DISTANCE = 116.7
 TEEKO_BOARD_SIZE = 5
 
 
@@ -75,7 +75,7 @@ def generate_pieces():
 
 def create_board_surf():  # create board surface with image background
     teeko_board = pygame.image.load(
-        "./src/teeko/view/1x/Artboard 1.png").convert_alpha()
+        "./src/teeko/view/assets/1x/Artboard 1.png").convert_alpha()
     teeko_board = pygame.transform.scale(
         teeko_board, (TEEKO_BOARD_WIDTH, TEEKO_BOARD_HEIGHT))
     return teeko_board
@@ -152,7 +152,7 @@ def blink_positions(neighor_pieces: List[Position], positions: List[TeekooPiece]
 
 pygame.init()
 pygame.display.set_caption("Teeko")
-ecran = pygame.display.set_mode((720, 720))
+ecran = pygame.display.set_mode((704, 704))
 clock = pygame.time.Clock()
 
 board = Board()
