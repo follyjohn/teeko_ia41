@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Game:
+class TeekoGame(ABC):
 
     def __init__(self):
         self.players = {}

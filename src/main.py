@@ -1,8 +1,7 @@
 
-import teeko.view.game
-from teeko.teeko import Teeko
-from teeko.teeko import Teeko
+from teeko.models.game.teeko_no_ui import TeekoNoUI
+# import teeko.view.game
 
-# if __name__ == "__main__":
-#     teeko = Teeko()
-#     teeko.play_game()   
+if __name__ == "__main__":
+    teeko = TeekoNoUI()
+    teeko.play_game()   
