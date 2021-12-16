@@ -145,6 +145,12 @@ class Board:
 
         return neighbors
 
+    # def get_coordinates_by_color(self, color: TeekoColorEnum) -> List[Coordinate]:
+    #     return Position.get_coordinate_from_positions(self.get_positions_by_color(color))
+
+    def get_coordinates_by_color(self, color: TeekoColorEnum) -> List[Coordinate]:
+        return [Coordinate(p.get_abs, p.get_ord) for p in self._positions if p.get_piece == color_to_piece(color)]
+
     def piece_count_by_color(self, color: TeekoColorEnum) -> int:
         return len(self.get_positions_by_color(color))
 

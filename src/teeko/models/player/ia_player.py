@@ -11,6 +11,7 @@
 import re
 import copy
 import pickle
+from abc import ABC, abstractmethod
 from typing import List
 from teeko.models.teeko_color import color_to_piece
 from teeko.models.position import Position
@@ -22,14 +23,20 @@ from teeko.models.movement import Movement
 from teeko.models.player.player import Player
 
 
-class IAPlayer(Player):
+class IAPlayer(Player,ABC):
 
     def __init__(self):
+        self.name = None
         super().__init__()
 
+    @property
+    def has_level(self):
+        return False
+
     @staticmethod
+    @abstractmethod
     def _get_player_info() -> str:
-        return str("William")
+        pass
 
     def print_player(self):
         super().print_player()

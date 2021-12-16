@@ -32,7 +32,7 @@ class HumanPlayer(Player):
     def _get_player_info() -> str:
         username = input("Enter username : ")
         while not re.fullmatch(r'[a-zA-Z0-9]+', username):
-            username = input("Invalid username, please try again : ")
+            username = input("Invalid username, use only letters and numbers, please try again : ")
         return str(username)
 
 

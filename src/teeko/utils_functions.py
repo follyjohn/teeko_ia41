@@ -10,3 +10,13 @@ def profile(fct):
                                                     time.time() - start_time))
     return ret
   return wrapper
+
+
+def counter(fn):
+    cnt = 0
+
+    def inner(*args, **kwargs):
+        nonlocal cnt
+        cnt += 1
+        return fn(*args, **kwargs)
+    return inner

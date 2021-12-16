@@ -1,7 +1,9 @@
+import configparser
 import copy
 import pickle
+import re
 from typing import List
-from teeko.utils import profile
+from teeko.utils_functions import profile
 from teeko.models.coordinate import Coordinate
 from teeko.models.position import Position
 from teeko.models.teeko_color import get_opponent
@@ -17,7 +19,26 @@ class Justine(IAPlayer):
 
     @staticmethod
     def _get_player_info() -> str:
-        return str("Justine")
+        default_name = "Justine"
+        config = configparser.RawConfigParser()
+        with open('config.ini', 'r') as configfile:
+            config.read_file(configfile)
+            if config['DEFAULT']['noui'] == 'no':
+                return default_name
+            else:
+                awnser = input("Do you want to change the name of the ai ? (y/n), q to quit: ")
+                while awnser != "y" and awnser != "n" and awnser != "q":
+                    awnser = input("Do you want to change the name of the ai ? (y/n), q to quit: ")
+                if awnser == "y":
+                    name = input("Enter the name of the ai : ")
+                    while not re.fullmatch(r'[a-zA-Z0-9]+', name):
+                        name = input("Invalid name,use only letters and numbers, please try again : ")
+                    return str(name)
+                elif awnser == "q":
+                    print("Quitting")
+                    exit()
+                elif awnser == "n":
+                    return default_name
 
     @staticmethod
     def eval(board: Board, color: TeekoColorEnum) -> float:
@@ -104,14 +125,5 @@ class Justine(IAPlayer):
                 best_movement = pickle.loads(pickle.dumps(movement))
         print("best movement: ", best_movement)
         return best_movement
-        
-        # for movement in movements:
-        #     bord_copy = copy.deepcopy(board)
-        #     bord_copy.move_piece(movement)
-        #     value = Justine.minmax(bord_copy, color, 0, float("-inf"), float("inf"))
-        #     print("value: ", value)
-        #     # print(value, best_value)
-        #     # print(movement)
-        #     if value == best_value:
-        #         return movement
+
         
