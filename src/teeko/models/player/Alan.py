@@ -1,3 +1,4 @@
+from teeko.utils_functions import naturalise
 from teeko.models.teeko_color import TeekoColorEnum
 from teeko.models.movement import Movement
 from teeko.models.board import Board

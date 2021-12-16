@@ -134,3 +134,4 @@ class Nada(AIPlayer):
                 color), deep-1, float("-inf"), float("inf"))
             if next_value == best_value:
                 return movement
+

@@ -4,6 +4,9 @@ import pygame
 import copy
 import time
 from pygame.draw import circle
+from teeko.models.player.Jasmine import Jasmine
+from teeko.models.player.Nada import Nada
+from teeko.models.player.Alan import Alan
 from teeko.models.player.Justine import Justine
 from teeko.models.teeko_color import color_to_piece
 from teeko.models.teeko_color import get_opponent
@@ -15,7 +18,6 @@ from teeko.models.coordinate import Coordinate
 from teeko.models.board import Board
 from teeko.models.position import Position
 from teeko.models.teeko_piece import TeekoPieceEnum
-
 
 TEEKO_BOARD_WIDTH = 704
 TEEKO_BOARD_HEIGHT = 704
@@ -115,7 +117,7 @@ def get_piece_under_mouse(positions: List[TeekooPiece]):
 
 
 def get_piece_clicked(positions: List[TeekooPiece], board: Board):
-    board.display()
+    
     mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
     x, y = [int(v) for v in mouse_pos]
     if x:
@@ -157,14 +159,14 @@ clock = pygame.time.Clock()
 
 board = Board()
 positions = generate_pieces()
-
+board.display()
 backgroung_image = create_board_surf()
 neighor_pieces = None
 selected_piece = None
 drop_pos = None
 player_color = TeekoColorEnum.BLACK_COLOR
 
-ia = Justine()
+ia = Alan()
  
 continuer = True
 while continuer:
@@ -180,7 +182,6 @@ while continuer:
     if neighor_pieces is not None:
         blink_positions(neighor_pieces, positions, ecran, player_color)
 
-    # board.display()
 
     piece = get_piece_under_mouse(positions)
     if piece != None:
@@ -188,54 +189,62 @@ while continuer:
         pygame.draw.circle(ecran, player_color.value, (x, y), 40, 2)
     pygame.display.flip()
 
-    for event in event_list:
-        if event.type == pygame.QUIT:
-            continuer = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            selected_piece = get_piece_clicked(positions, board)
+    if player_color == TeekoColorEnum.BLACK_COLOR:
+        for event in event_list:
+            if event.type == pygame.QUIT:
+                continuer = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                selected_piece = get_piece_clicked(positions, board)
 
-            if selected_piece != None:
-                if selected_piece.get_piece.value != TeekoPieceEnum.EMPTY_PIECE.value and board.get_remaining_pieces_by_color(piece_to_color(selected_piece.get_piece)) > 0:
-                    selected_piece = None
-                    old_position = None
-                    neighor_pieces = None
-                elif selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
-                    mouvement = Movement(
-                        Coordinate(-1, -1), selected_piece.get_coordinate(), color_to_piece(player_color))
-                    if mouvement.is_legal_movement(board):
-                        board.move_piece(mouvement)
-                        positions = update_board(ecran, positions, board)
-                        player_color = get_opponent(player_color)
-                        old_position = copy.deepcopy(selected_piece)
+                if selected_piece != None:
+                    if selected_piece.get_piece.value != TeekoPieceEnum.EMPTY_PIECE.value and board.get_remaining_pieces_by_color(piece_to_color(selected_piece.get_piece)) > 0:
                         selected_piece = None
-                else:
-                    if neighor_pieces is not None:
-                        new_piece = get_piece_clicked(positions, board)
-                        if new_piece.get_piece.value == old_position.get_piece.value:
+                        old_position = None
+                        neighor_pieces = None
+                    elif selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
+                        mouvement = Movement(
+                            Coordinate(-1, -1), selected_piece.get_coordinate(), color_to_piece(player_color))
+                        if mouvement.is_legal_movement(board):
+                            board.move_piece(mouvement)
+                            positions = update_board(ecran, positions, board)
+                            player_color = get_opponent(player_color)
+                            old_position = copy.deepcopy(selected_piece)
                             selected_piece = None
-                            old_position = None
-                            neighor_pieces = None
-                        else:
-                            mouvement = Movement(
-                                old_position.get_coordinate(), new_piece.get_coordinate(), color_to_piece(player_color))
-                            if mouvement.is_legal_movement(board):
-                                board.move_piece(mouvement)
-                                positions = update_board(
-                                    ecran, positions, board)
-                                player_color = get_opponent(player_color)
-                                neighor_pieces = None
+                            board.display()
+                    else:
+                        if neighor_pieces is not None:
+                            new_piece = get_piece_clicked(positions, board)
+                            if new_piece.get_piece.value == old_position.get_piece.value:
                                 selected_piece = None
                                 old_position = None
-                    elif player_color == piece_to_color(selected_piece.get_piece):
-                        neighor_pieces = board.get_neighbors_empty(
-                            selected_piece.get_abs, selected_piece.get_ord)
-                        old_position = copy.deepcopy(selected_piece)
-                        blink_positions(
-                            neighor_pieces, positions, ecran, player_color)
-                    else:
-                        neighor_pieces = None
-                        old_position = None
-                        selected_piece = None
+                                neighor_pieces = None
+                            else:
+                                mouvement = Movement(
+                                    old_position.get_coordinate(), new_piece.get_coordinate(), color_to_piece(player_color))
+                                if mouvement.is_legal_movement(board):
+                                    board.move_piece(mouvement)
+                                    positions = update_board(
+                                        ecran, positions, board)
+                                    player_color = get_opponent(player_color)
+                                    neighor_pieces = None
+                                    selected_piece = None
+                                    old_position = None
+                                    board.display()
+                        elif player_color == piece_to_color(selected_piece.get_piece):
+                            neighor_pieces = board.get_neighbors_empty(
+                                selected_piece.get_abs, selected_piece.get_ord)
+                            old_position = copy.deepcopy(selected_piece)
+                            blink_positions(
+                                neighor_pieces, positions, ecran, player_color)
+                        else:
+                            neighor_pieces = None
+                            old_position = None
+                            selected_piece = None
+    else:
+        mv = ia.move(board, player_color)
+        board.move_piece(mv)
+        board.display()
+        player_color = get_opponent(player_color)
 
 
 if board.is_game_over():

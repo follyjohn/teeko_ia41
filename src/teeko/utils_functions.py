@@ -11,6 +11,16 @@ def profile(fct):
     return ret
   return wrapper
 
+def naturalise(fct):
+  def wrapper(*args, **kw):
+    start_time = time.time()
+    fct(*args, **kw)
+    delay = time.time() - start_time
+    if delay<2:
+      time.sleep(2-delay)
+    
+  return wrapper
+
 
 def counter(fn):
     cnt = 0

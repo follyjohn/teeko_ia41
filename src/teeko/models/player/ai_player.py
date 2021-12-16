@@ -29,7 +29,6 @@ class AIPlayer(Player):
         self.name = None
         super().__init__()
 
-    @property
     def has_level(self):
         return False
 

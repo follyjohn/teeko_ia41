@@ -1,5 +1,6 @@
 
-# from teeko.models.game.teeko_no_ui import TeekoNoUI
+from teeko.models.game.teeko_ui import TeekoUI
+from teeko.models.game.teeko_no_ui import TeekoNoUI
 # import teeko.view.game
 
 from teeko.models.game.teeko_no_ui import TeekoNoUI
@@ -22,11 +23,12 @@ if __name__ == "__main__":
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
 
-    # with open('config.ini', 'r') as configfile:
-    #     config.read_file(configfile)
-    
-    
-    teeko = TeekoNoUI()
+    with open('config.ini', 'r') as configfile:
+            config.read_file(configfile)
+            if config['DEFAULT']['noui'] == 'no':
+                teeko = TeekoUI()
+            else:
+                teeko = TeekoNoUI()
     teeko.play_game()
     # palyer = get_player_by_choice(5)
     # palyer.print_player()   

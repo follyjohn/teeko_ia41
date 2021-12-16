@@ -9,9 +9,10 @@
     
 """
 import re
+import configparser
+from teeko.view.set_human_player import set_human_player
 from teeko.models.teeko_color import color_to_piece
 from teeko.models.teeko_color import TeekoColorEnum
-
 from teeko.models.board import Board
 from teeko.models.coordinate import Coordinate
 from teeko.models.movement import Movement
@@ -30,10 +31,17 @@ class HumanPlayer(Player):
     """
     @staticmethod
     def _get_player_info() -> str:
-        username = input("Enter username : ")
-        while not re.fullmatch(r'[a-zA-Z0-9]+', username):
-            username = input("Invalid username, use only letters and numbers, please try again : ")
-        return str(username)
+        config = configparser.RawConfigParser()
+        with open('config.ini', 'r') as configfile:
+            config.read_file(configfile)
+            if config['DEFAULT']['noui'] == 'no':
+                username = set_human_player()
+                return username
+            else:    
+                username = input("Enter username : ")
+                while not re.fullmatch(r'[a-zA-Z0-9]+', username):
+                    username = input("Invalid username, use only letters and numbers, please try again : ")
+                return str(username)
 
 
     def print_player(self):

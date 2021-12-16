@@ -20,7 +20,6 @@ class Yaw(AIPlayer):
     levels = [GameLevel.EASY, GameLevel.MEDIUM, GameLevel.HARD]
     def _init_(self):
         super().__init__()
-        self.levels = [GameLevel.EASY, GameLevel.MEDIUM, GameLevel.HARD]
         self.level = GameLevel.EASY
 
     def get_levels(self) -> List[GameLevel]:
@@ -65,11 +64,9 @@ class Yaw(AIPlayer):
             value = 100000
         else:
             player_position = board.get_coordinates_by_color(color)
-            opponent_position = board.get_positions_by_color(
-                get_opponent(color))
+            opponent_position = board.get_positions_by_color(get_opponent(color))
             empty_position = board.get_empty_positions_coordinate()
-            value = 40*Yaw.piece_distance_from_center_coef(
-                player_position) + 60*Yaw.piece_distance_togehter_coef(player_position)
+            value = 40*Yaw.piece_distance_from_center_coef(player_position) + 60*Yaw.piece_distance_togehter_coef(player_position)
 
         return value
 
