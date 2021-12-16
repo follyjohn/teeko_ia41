@@ -23,7 +23,7 @@ from teeko.models.movement import Movement
 from teeko.models.player.player import Player
 
 
-class IAPlayer(Player,ABC):
+class AIPlayer(Player):
 
     def __init__(self):
         self.name = None
@@ -79,10 +79,10 @@ class IAPlayer(Player,ABC):
 
     @staticmethod
     def generate_next_board_states(board: Board, color: TeekoColorEnum) -> List[Board]:
-        movements = IAPlayer.generate_next_movements(board, color)
+        movements = AIPlayer.generate_next_movements(board, color)
         boards = []
         for movement in movements:
-            boards.append(IAPlayer.generate_next_board_state(board, movement))
+            boards.append(AIPlayer.generate_next_board_state(board, movement))
         return boards
 
 # Alan Noel Leonie Israël

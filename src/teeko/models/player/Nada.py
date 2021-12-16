@@ -9,14 +9,14 @@ from teeko.models.teeko_color import get_opponent
 from teeko.models.teeko_color import TeekoColorEnum
 from teeko.models.movement import Movement
 from teeko.models.board import Board
-from teeko.models.player.ia_player import IAPlayer
+from teeko.models.player.ai_player import AIPlayer
 import random
 from threading import Thread
 from copy import copy
 from time import time
 
-class Nada(IAPlayer):
 
+class Nada(AIPlayer):
 
     @staticmethod
     def _get_player_info() -> str:
@@ -27,13 +27,16 @@ class Nada(IAPlayer):
             if config['DEFAULT']['noui'] == 'no':
                 return default_name
             else:
-                awnser = input("Do you want to change the name of the ai ? (y/n), q to quit: ")
+                awnser = input(
+                    "Do you want to change the name of the ai ? (y/n), q to quit: ")
                 while awnser != "y" and awnser != "n" and awnser != "q":
-                    awnser = input("Do you want to change the name of the ai ? (y/n), q to quit: ")
+                    awnser = input(
+                        "Do you want to change the name of the ai ? (y/n), q to quit: ")
                 if awnser == "y":
                     name = input("Enter the name of the ai : ")
                     while not re.fullmatch(r'[a-zA-Z0-9]+', name):
-                        name = input("Invalid name,use only letters and numbers, please try again : ")
+                        name = input(
+                            "Invalid name,use only letters and numbers, please try again : ")
                     return str(name)
                 elif awnser == "q":
                     print("Quitting")
@@ -50,8 +53,9 @@ class Nada(IAPlayer):
             player_position = board.get_coordinates_by_color(color)
             # opponent_position = board.get_positions_by_color(get_opponent(color))
 
-            value = 40*Nada.piece_distance_from_center_coef(player_position) + 60*Nada.piece_distance_togehter_coef(player_position)
-        
+            value = 40*Nada.piece_distance_from_center_coef(
+                player_position) + 60*Nada.piece_distance_togehter_coef(player_position)
+
         # board.display()
         #   print("value: ", value)
 
@@ -61,9 +65,8 @@ class Nada(IAPlayer):
         return value
 
     @staticmethod
-    def  eval_coordinate(color: TeekoColorEnum, coordinates: Coordinate, opponent_coordinates) -> float:
+    def eval_coordinate(color: TeekoColorEnum, coordinates: Coordinate, opponent_coordinates) -> float:
         ...
-        
 
     @staticmethod
     def minmax(board: Board, color: TeekoColorEnum, depth: int, alpha: float, beta: float) -> float:
@@ -119,14 +122,15 @@ class Nada(IAPlayer):
 
         if len(board.get_empty_positions()) >= 23:
             deep = 2
-        best_value = Nada.minmax(board, color, deep, float("-inf"), float("inf"))
+        best_value = Nada.minmax(
+            board, color, deep, float("-inf"), float("inf"))
         start_time = time()
         movements = self.generate_next_movements(board, color)
         while len(movements) > 0:
             movement = movements.pop()
             next_board = pickle.loads(pickle.dumps(board))
             next_board.move_piece(movement)
-            next_value = Nada.minmax(next_board, get_opponent(color), deep-1, float("-inf"), float("inf"))
+            next_value = Nada.minmax(next_board, get_opponent(
+                color), deep-1, float("-inf"), float("inf"))
             if next_value == best_value:
                 return movement
-

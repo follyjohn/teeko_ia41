@@ -31,6 +31,7 @@ class TeekoNoUI(TeekoGame):
         print("3. Computer vs Human")
         print("4. Computer vs Computer")
         print("5. Quit")
+        print()
         game_mode = input("Enter game mode: ")
         while not game_mode.isdigit() or int(game_mode) < 1 or int(game_mode) > 5:
             print("Invalid game mode")
@@ -56,7 +57,7 @@ class TeekoNoUI(TeekoGame):
             print("4. Yaw")
             print("5. Alan")
             print("6. Quit")
-
+            print()
             player_a_choice = input("Enter player a choice: ")
             while not player_a_choice.isdigit() or int(player_a_choice) < 1 or int(player_a_choice) > 6:
                 print("Invalid choice")
@@ -67,11 +68,11 @@ class TeekoNoUI(TeekoGame):
                 exit()
             else:
                 player_a = get_player_by_choice(int(player_a_choice))
-                if player_a.has_level == True:
+                if player_a.has_level() == True:
                     for level in player_a.get_levels():
                         print("{}. for level {}".format(level.value, level._name_))
                     selected_level = int(input("Enter level: "))
-                    while not selected_level in player_a.get_levels():
+                    while not selected_level in [l.value for l in player_a.get_levels()]:
                         print("Invalid level")
                         selected_level = int(input("Enter level: "))
                     player_a.set_level(selected_level)
@@ -88,7 +89,7 @@ class TeekoNoUI(TeekoGame):
             print("4. Yaw")
             print("5. Alan")
             print("6. Quit")
-
+            print()
             player_b_choice = input("Enter player b choice: ")
             while not player_b_choice.isdigit() or int(player_b_choice) < 1 or int(player_b_choice) > 6:
                 print("Invalid choice")
@@ -99,11 +100,11 @@ class TeekoNoUI(TeekoGame):
                 exit()
             else:
                 player_b = get_player_by_choice(int(player_b_choice))
-                if player_b.has_level == True:
+                if player_b.has_level() == True:
                     for level in player_b.get_levels():
                         print("{}. for level {}".format(level.value, level._name_))
                     selected_level = int(input("Enter level: "))
-                    while not selected_level in player_b.get_levels():
+                    while not selected_level in [l.value for l in player_b.get_levels()]:
                         print("Invalid level")
                         selected_level = int(input("Enter level: "))
                     player_b.set_level(selected_level)

@@ -2,6 +2,7 @@ import configparser
 import pickle
 import re
 from typing import List
+from teeko.models.game.game_level import GameLevel
 from teeko.utils_functions import profile
 from teeko.models.coordinate import Coordinate
 from teeko.models.position import Position
@@ -9,13 +10,27 @@ from teeko.models.teeko_color import get_opponent
 from teeko.models.teeko_color import TeekoColorEnum
 from teeko.models.movement import Movement
 from teeko.models.board import Board
-from teeko.models.player.ia_player import IAPlayer
+from teeko.models.player.ai_player import AIPlayer
 from threading import Thread
 from copy import copy
 from time import time
 
 
-class Yaw(IAPlayer):
+class Yaw(AIPlayer):
+    levels = [GameLevel.EASY, GameLevel.MEDIUM, GameLevel.HARD]
+    def _init_(self):
+        super().__init__()
+        self.levels = [GameLevel.EASY, GameLevel.MEDIUM, GameLevel.HARD]
+        self.level = GameLevel.EASY
+
+    def get_levels(self) -> List[GameLevel]:
+        return self.levels
+
+    def set_level(self, level: GameLevel):
+        self.level = level
+
+    def has_level(self):
+        return True
 
     @staticmethod
     def _get_player_info() -> str:
@@ -26,13 +41,16 @@ class Yaw(IAPlayer):
             if config['DEFAULT']['noui'] == 'no':
                 return default_name
             else:
-                awnser = input("Do you want to change the name of the ai ? (y/n), q to quit: ")
+                awnser = input(
+                    "Do you want to change the name of the ai ? (y/n), q to quit: ")
                 while awnser != "y" and awnser != "n" and awnser != "q":
-                    awnser = input("Do you want to change the name of the ai ? (y/n), q to quit: ")
+                    awnser = input(
+                        "Do you want to change the name of the ai ? (y/n), q to quit: ")
                 if awnser == "y":
                     name = input("Enter the name of the ai : ")
                     while not re.fullmatch(r'[a-zA-Z0-9]+', name):
-                        name = input("Invalid name,use only letters and numbers, please try again : ")
+                        name = input(
+                            "Invalid name,use only letters and numbers, please try again : ")
                     return str(name)
                 elif awnser == "q":
                     print("Quitting")
@@ -121,7 +139,7 @@ class Yaw(IAPlayer):
 
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:
-        deep = 4
+        deep = self.level
 
         if len(board.get_empty_positions()) >= 23:
             deep = 2
@@ -132,6 +150,7 @@ class Yaw(IAPlayer):
             movement = movements.pop()
             next_board = pickle.loads(pickle.dumps(board))
             next_board.move_piece(movement)
-            next_value = Yaw.minmax(next_board, get_opponent(color), deep-1, False, float("-inf"), float("inf"))
+            next_value = Yaw.minmax(next_board, get_opponent(
+                color), deep-1, False, float("-inf"), float("inf"))
             if next_value == best_value:
                 return movement
