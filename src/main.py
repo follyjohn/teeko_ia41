@@ -1,13 +1,14 @@
-
+from teeko.models.board import Board
+from teeko.models.player.Alan import Alan
+from teeko.models.player.human_player import HumanPlayer
 from teeko.models.game.teeko_ui import TeekoUI
 from teeko.models.game.teeko_no_ui import TeekoNoUI
-# import teeko.view.game
-
+from teeko.view.game import gui_play_turn
+from teeko.models.player.Yaw import Yaw
 from teeko.models.game.teeko_no_ui import TeekoNoUI
 from teeko.utils.player_utils import get_player_by_choice
 import configparser
 import argparse
-
 
 if __name__ == "__main__":
     config = configparser.RawConfigParser()
@@ -30,5 +31,5 @@ if __name__ == "__main__":
             else:
                 teeko = TeekoNoUI()
     teeko.play_game()
-    # palyer = get_player_by_choice(5)
-    # palyer.print_player()   
+# palyer = get_player_by_choice(5)
+# palyer.print_player()

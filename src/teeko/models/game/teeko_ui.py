@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from teeko.view.game import gui_play_turn
 from teeko.view.select_ai import select_ai
 from teeko.view.select_game_mode import select_screen
 from teeko.utils.player_utils import get_player_by_choice
@@ -123,15 +124,7 @@ class TeekoUI(TeekoGame):
             print("Players are not set up\n")
             self._initialise_player()
         print("Let's play Teeko\n")
-        next_player = self.get_black_player()
-        while not self.is_game_over():
-            self.play_turn(next_player)
-            if next_player == self.get_black_player():
-                next_player = self.get_red_player()
-            else:
-                next_player = self.get_black_player()
-
-        self.print_winner()
+        gui_play_turn(self.board, self.get_black_player(), self.get_red_player())
 
     def get_players(self) -> List[Player]:
         return list(self.players.values())
