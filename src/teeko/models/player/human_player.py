@@ -35,7 +35,7 @@ class HumanPlayer(Player):
         with open('config.ini', 'r') as configfile:
             config.read_file(configfile)
             if config['DEFAULT']['noui'] == 'no':
-                username = set_human_player()
+                username = set_human_player("Enter your name : ")
                 return username
             else:    
                 username = input("Enter username : ")

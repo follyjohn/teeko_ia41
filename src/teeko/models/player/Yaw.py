@@ -18,6 +18,8 @@ from time import time
 
 class Yaw(AIPlayer):
     levels = [GameLevel.EASY, GameLevel.MEDIUM, GameLevel.HARD]
+    level = GameLevel.EASY
+
     def _init_(self):
         super().__init__()
         self.level = GameLevel.EASY
@@ -136,7 +138,7 @@ class Yaw(AIPlayer):
 
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:
-        deep = self.level
+        deep = self.level.value
 
         if len(board.get_empty_positions()) >= 23:
             deep = 2

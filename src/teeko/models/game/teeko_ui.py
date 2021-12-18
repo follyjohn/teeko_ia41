@@ -1,6 +1,6 @@
-
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from teeko.view.select_ai import select_ai
 from teeko.view.select_game_mode import select_screen
 from teeko.utils.player_utils import get_player_by_choice
 from teeko.models.game.teeko import TeekoGame
@@ -35,64 +35,34 @@ class TeekoUI(TeekoGame):
             player_a = HumanPlayer()
         else:
             print("Select an IA for player a")
-            print("1. Nada")
-            print("2. Jasmine")
-            print("3. Justine")
-            print("4. Yaw")
-            print("5. Alan")
-            print("6. Quit")
-            print()
-            player_a_choice = input("Enter player a choice: ")
-            while not player_a_choice.isdigit() or int(player_a_choice) < 1 or int(player_a_choice) > 6:
-                print("Invalid choice")
-                player_a_choice = input("Enter player a choice: ")
-
-            if int(player_a_choice) == 6:
-                print("Quitting game")
-                exit()
-            else:
-                player_a = get_player_by_choice(int(player_a_choice))
-                if player_a.has_level() == True:
-                    for level in player_a.get_levels():
-                        print("{}. for level {}".format(
-                            level.value, level._name_))
-                    selected_level = int(input("Enter level: "))
-                    while not selected_level in [l.value for l in player_a.get_levels()]:
-                        print("Invalid level")
-                        selected_level = int(input("Enter level: "))
-                    player_a.set_level(selected_level)
+            player_a_choice = select_ai()
+            player_a = get_player_by_choice(int(player_a_choice))
+            # if player_a.has_level() == True:
+            #     for level in player_a.get_levels():
+            #         print("{}. for level {}".format(
+            #             level.value, level._name_))
+            #     selected_level = int(input("Enter level: "))
+            #     while not selected_level in [l.value for l in player_a.get_levels()]:
+            #         print("Invalid level")
+            #         selected_level = int(input("Enter level: "))
+            #     player_a.set_level(selected_level)
 
         print("Set up player b")
         if self.get_mode() == 1 or self.get_mode() == 3:
             player_b = HumanPlayer()
         else:
-            print("Select an IA for player b")
-            print("1. Nada")
-            print("2. Jasmine")
-            print("3. Justine")
-            print("4. Yaw")
-            print("5. Alan")
-            print("6. Quit")
-            print()
-            player_b_choice = input("Enter player b choice: ")
-            while not player_b_choice.isdigit() or int(player_b_choice) < 1 or int(player_b_choice) > 6:
-                print("Invalid choice")
-                player_b_choice = input("Enter player b choice: ")
-
-            if int(player_b_choice) == 6:
-                print("Quitting game")
-                exit()
-            else:
-                player_b = get_player_by_choice(int(player_b_choice))
-                if player_b.has_level() == True:
-                    for level in player_b.get_levels():
-                        print("{}. for level {}".format(
-                            level.value, level._name_))
-                    selected_level = int(input("Enter level: "))
-                    while not selected_level in [l.value for l in player_b.get_levels()]:
-                        print("Invalid level")
-                        selected_level = int(input("Enter level: "))
-                    player_b.set_level(selected_level)
+            print("Select an IA for player a")
+            player_b_choice = select_ai()
+            player_b = get_player_by_choice(int(player_b_choice))
+            # if player_a.has_level() == True:
+            #     for level in player_a.get_levels():
+            #         print("{}. for level {}".format(
+            #             level.value, level._name_))
+            #     selected_level = int(input("Enter level: "))
+            #     while not selected_level in [l.value for l in player_a.get_levels()]:
+            #         print("Invalid level")
+            #         selected_level = int(input("Enter level: "))
+            #     player_a.set_level(selected_level)
 
         # print()
         # print("Set up player b")

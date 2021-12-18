@@ -248,6 +248,8 @@ while continuer:
 
 
 if board.is_game_over():
+    piece = None
+    pygame.display.flip()
     time.sleep(5)
 
 pygame.quit()
