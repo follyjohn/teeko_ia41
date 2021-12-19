@@ -26,7 +26,6 @@ from teeko.models.player.player import Player
 class AIPlayer(Player):
 
     def __init__(self):
-        self.name = None
         super().__init__()
 
     def has_level(self):

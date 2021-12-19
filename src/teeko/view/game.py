@@ -10,10 +10,10 @@ from pygame.draw import circle
 from teeko.models.player.ai_player import AIPlayer
 from teeko.models.player.human_player import HumanPlayer
 from teeko.models.player.player import Player
-from teeko.models.player.Jasmine import Jasmine
-from teeko.models.player.Nada import Nada
-from teeko.models.player.Alan import Alan
-from teeko.models.player.Justine import Justine
+from teeko.models.player.jasmine import Jasmine
+from teeko.models.player.nada import Nada
+from teeko.models.player.alan import Alan
+from teeko.models.player.justine import Justine
 from teeko.models.teeko_color import color_to_piece
 from teeko.models.teeko_color import get_opponent
 from teeko.models.teeko_color import piece_to_color
@@ -187,7 +187,6 @@ def gui_play_turn(board: Board, player_a: Player, player_b: Player):
 
     current_player = (player_a, TeekoColorEnum.BLACK_COLOR)
 
-    ia = Alan()
 
     continuer = True
     while continuer:
@@ -210,7 +209,7 @@ def gui_play_turn(board: Board, player_a: Player, player_b: Player):
             pygame.draw.circle(ecran, current_player[1].value, (x, y), 40, 2)
         pygame.display.flip()
 
-        if isinstance(current_player[0],HumanPlayer):
+        if isinstance(current_player[0], HumanPlayer):
             for event in event_list:
                 if event.type == pygame.QUIT:
                     continuer = False
@@ -232,10 +231,13 @@ def gui_play_turn(board: Board, player_a: Player, player_b: Player):
                                 board.move_piece(mouvement)
                                 positions = update_board(
                                     ecran, positions, board)
-                                if current_player[1] == TeekoColorEnum.BLACK_COLOR:
-                                    current_player = (player_b, TeekoColorEnum.RED_COLOR)
+                                if current_player[
+                                        1] == TeekoColorEnum.BLACK_COLOR:
+                                    current_player = (player_b,
+                                                      TeekoColorEnum.RED_COLOR)
                                 else:
-                                    current_player = (player_a, TeekoColorEnum.BLACK_COLOR)
+                                    current_player = (
+                                        player_a, TeekoColorEnum.BLACK_COLOR)
                                 old_position = copy.deepcopy(selected_piece)
                                 selected_piece = None
                                 board.display()
@@ -255,10 +257,15 @@ def gui_play_turn(board: Board, player_a: Player, player_b: Player):
                                         board.move_piece(mouvement)
                                         positions = update_board(
                                             ecran, positions, board)
-                                        if current_player[1] == TeekoColorEnum.BLACK_COLOR:
-                                            current_player = (player_b, TeekoColorEnum.RED_COLOR)
+                                        if current_player[
+                                                1] == TeekoColorEnum.BLACK_COLOR:
+                                            current_player = (
+                                                player_b,
+                                                TeekoColorEnum.RED_COLOR)
                                         else:
-                                            current_player = (player_a, TeekoColorEnum.BLACK_COLOR)
+                                            current_player = (
+                                                player_a,
+                                                TeekoColorEnum.BLACK_COLOR)
                                         neighor_pieces = None
                                         selected_piece = None
                                         old_position = None
@@ -276,7 +283,7 @@ def gui_play_turn(board: Board, player_a: Player, player_b: Player):
                                 old_position = None
                                 selected_piece = None
         else:
-            mv = ia.move(board, current_player[1])
+            mv = current_player[0].move(board, current_player[1])
             board.move_piece(mv)
             board.display()
             if current_player[1] == TeekoColorEnum.BLACK_COLOR:

@@ -1,14 +1,13 @@
-
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from teeko.utils.player_utils import get_player_by_choice
 from teeko.models.game.teeko import TeekoGame
-from teeko.models.player.Jasmine import Jasmine
-from teeko.models.player.Nada import Nada
-from teeko.models.player.Justine import Justine
-from teeko.models.player.Yaw import Yaw
+from teeko.models.player.jasmine import Jasmine
+from teeko.models.player.nada import Nada
+from teeko.models.player.justine import Justine
+from teeko.models.player.yaw import Yaw
 from teeko.models.board import Board
-from teeko.models.player.Alan import Alan
+from teeko.models.player.alan import Alan
 from teeko.models.player.human_player import HumanPlayer
 from teeko.models.player.player import Player
 from teeko.models.position import Position
@@ -17,7 +16,6 @@ from teeko.models.teeko_piece import TeekoPieceEnum
 
 
 class TeekoNoUI(TeekoGame):
-
     def __init__(self):
         super().__init__()
 
@@ -33,7 +31,8 @@ class TeekoNoUI(TeekoGame):
         print("5. Quit")
         print()
         game_mode = input("Enter game mode: ")
-        while not game_mode.isdigit() or int(game_mode) < 1 or int(game_mode) > 5:
+        while not game_mode.isdigit() or int(game_mode) < 1 or int(
+                game_mode) > 5:
             print("Invalid game mode")
             game_mode = input("Enter game mode: ")
 
@@ -43,12 +42,12 @@ class TeekoNoUI(TeekoGame):
         else:
             self.set_mode(int(game_mode))
 
-
     def _initialise_player(self):
         print("Setting up players\n")
         print("Set up player a")
         if self.get_mode() == 1 or self.get_mode() == 2:
             player_a = HumanPlayer()
+
         else:
             print("Select an IA for player a")
             print("1. Nada")
@@ -59,10 +58,11 @@ class TeekoNoUI(TeekoGame):
             print("6. Quit")
             print()
             player_a_choice = input("Enter player a choice: ")
-            while not player_a_choice.isdigit() or int(player_a_choice) < 1 or int(player_a_choice) > 6:
+            while not player_a_choice.isdigit() or int(
+                    player_a_choice) < 1 or int(player_a_choice) > 6:
                 print("Invalid choice")
                 player_a_choice = input("Enter player a choice: ")
-            
+
             if int(player_a_choice) == 6:
                 print("Quitting game")
                 exit()
@@ -70,13 +70,15 @@ class TeekoNoUI(TeekoGame):
                 player_a = get_player_by_choice(int(player_a_choice))
                 if player_a.has_level() == True:
                     for level in player_a.get_levels():
-                        print("{}. for level {}".format(level.value, level._name_))
+                        print("{}. for level {}".format(
+                            level.value, level._name_))
                     selected_level = int(input("Enter level: "))
-                    while not selected_level in [l.value for l in player_a.get_levels()]:
+                    while not selected_level in [
+                            l.value for l in player_a.get_levels()
+                    ]:
                         print("Invalid level")
                         selected_level = int(input("Enter level: "))
                     player_a.set_level(selected_level)
-
 
         print("Set up player b")
         if self.get_mode() == 1 or self.get_mode() == 3:
@@ -91,10 +93,11 @@ class TeekoNoUI(TeekoGame):
             print("6. Quit")
             print()
             player_b_choice = input("Enter player b choice: ")
-            while not player_b_choice.isdigit() or int(player_b_choice) < 1 or int(player_b_choice) > 6:
+            while not player_b_choice.isdigit() or int(
+                    player_b_choice) < 1 or int(player_b_choice) > 6:
                 print("Invalid choice")
                 player_b_choice = input("Enter player b choice: ")
-            
+
             if int(player_b_choice) == 6:
                 print("Quitting game")
                 exit()
@@ -102,13 +105,18 @@ class TeekoNoUI(TeekoGame):
                 player_b = get_player_by_choice(int(player_b_choice))
                 if player_b.has_level() == True:
                     for level in player_b.get_levels():
-                        print("{}. for level {}".format(level.value, level._name_))
+                        print("{}. for level {}".format(
+                            level.value, level._name_))
                     selected_level = int(input("Enter level: "))
-                    while not selected_level in [l.value for l in player_b.get_levels()]:
+                    while not selected_level in [
+                            l.value for l in player_b.get_levels()
+                    ]:
                         print("Invalid level")
                         selected_level = int(input("Enter level: "))
                     player_b.set_level(selected_level)
 
+        player_a.set_color(TeekoColorEnum.BLACK_COLOR)
+        player_b.set_color(TeekoColorEnum.RED_COLOR)
 
         # print()
         # print("Set up player b")
@@ -153,7 +161,7 @@ class TeekoNoUI(TeekoGame):
         print("Winner is {}".format(self._winner.get_name()))
 
     def play_turn(self, player: Player):
-        print("Your turn player : "+player.get_name())
+        print("Your turn player : " + player.get_name())
         player_piece_color = self.get_player_color(player)
 
         player_movement = player.move(self.board, player_piece_color)
@@ -176,8 +184,7 @@ class TeekoNoUI(TeekoGame):
                 next_player = self.get_red_player()
             else:
                 next_player = self.get_black_player()
-            
-            
+
         self.print_winner()
 
     def get_players(self) -> List[Player]:
@@ -196,7 +203,7 @@ class TeekoNoUI(TeekoGame):
         self.set_player(player=player, color=TeekoColorEnum.RED_COLOR)
 
     def set_player(self, player: Player, color: TeekoColorEnum):
-        if(color not in self.players.keys()):
+        if (color not in self.players.keys()):
             if len(self.players) == 2:
                 print("Players are already set up\n")
                 return
@@ -207,7 +214,6 @@ class TeekoNoUI(TeekoGame):
             self.players[color] = player
         else:
             print("Player already exist\n")
-            
 
     def get_player_color(self, player: Player) -> Optional[TeekoColorEnum]:
         for color, p in self.players.items():

@@ -141,7 +141,7 @@ class Yaw(AIPlayer):
         deep = self.level.value
 
         if len(board.get_empty_positions()) >= 23:
-            deep = 2
+            deep = 1
         best_value = Yaw.minmax(
             board, color, deep, True, float("-inf"), float("inf"), )
         movements = self.generate_next_movements(board, color)

@@ -122,8 +122,7 @@ class Justine(AIPlayer):
             movement = movements.pop()
             next_board = pickle.loads(pickle.dumps(board))
             next_board.move_piece(movement)
-            next_value = Justine.minmax(next_board, get_opponent(
-                color), 3, float("-inf"), float("inf"))
+            next_value = Justine.minmax(next_board, get_opponent(color), 3, float("-inf"), float("inf"))
             if next_value > best_value:
                 best_value = next_value
                 best_movement = pickle.loads(pickle.dumps(movement))

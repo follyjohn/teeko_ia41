@@ -24,6 +24,19 @@ class HumanPlayer(Player):
     def __init__(self):
         super().__init__()
 
+    def get_color(self) -> TeekoColorEnum:
+        return self._color
+
+    def get_label(self) -> str:
+        return self._label
+
+    def set_color(self, color: TeekoColorEnum):
+        if self._color is None:
+            self._color = color
+
+    def set_label(self, label: str):
+        self._label = label
+
 
     """This fuunction is use to ask the user for the name of the player
 
@@ -35,9 +48,9 @@ class HumanPlayer(Player):
         with open('config.ini', 'r') as configfile:
             config.read_file(configfile)
             if config['DEFAULT']['noui'] == 'no':
-                username = set_human_player("Enter your name : ")
+                username = "John"
                 return username
-            else:    
+            else:
                 username = input("Enter username : ")
                 while not re.fullmatch(r'[a-zA-Z0-9]+', username):
                     username = input("Invalid username, use only letters and numbers, please try again : ")

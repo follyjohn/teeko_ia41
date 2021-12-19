@@ -28,11 +28,30 @@ class Player(ABC):
     @abstractmethod
     def _get_player_info() -> str:
         pass
-    
+
 
     @abstractmethod
     def __init__(self):
         self._name = self._get_player_info()
+        self._color = None
+        self._label = None
+
+    @abstractmethod
+    def get_color(self) -> TeekoColorEnum:
+        return self._color
+
+    @abstractmethod
+    def get_label(self) -> str:
+        return self._label
+
+    @abstractmethod
+    def set_color(self, color: TeekoColorEnum):
+        if self._color is None:
+            self._color = color
+
+    @abstractmethod
+    def set_label(self, label: str):
+        self._label = label
 
 
     # Abstract method that must be implemented by subclass to pretty print the player.
@@ -53,5 +72,3 @@ class Player(ABC):
 
     def get_name(self):
         return self._name
-
-

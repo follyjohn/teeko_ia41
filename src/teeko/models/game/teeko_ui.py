@@ -5,12 +5,12 @@ from teeko.view.select_ai import select_ai
 from teeko.view.select_game_mode import select_screen
 from teeko.utils.player_utils import get_player_by_choice
 from teeko.models.game.teeko import TeekoGame
-from teeko.models.player.Jasmine import Jasmine
-from teeko.models.player.Nada import Nada
-from teeko.models.player.Justine import Justine
-from teeko.models.player.Yaw import Yaw
+from teeko.models.player.jasmine import Jasmine
+from teeko.models.player.nada import Nada
+from teeko.models.player.justine import Justine
+from teeko.models.player.yaw import Yaw
 from teeko.models.board import Board
-from teeko.models.player.Alan import Alan
+from teeko.models.player.alan import Alan
 from teeko.models.player.human_player import HumanPlayer
 from teeko.models.player.player import Player
 from teeko.models.position import Position
@@ -19,7 +19,6 @@ from teeko.models.teeko_piece import TeekoPieceEnum
 
 
 class TeekoUI(TeekoGame):
-
     def __init__(self):
         super().__init__()
 
@@ -75,6 +74,8 @@ class TeekoUI(TeekoGame):
         # print()
         self.set_black_player(player_a)
         self.set_red_player(player_b)
+        player_a.set_color(TeekoColorEnum.BLACK_COLOR)
+        player_b.set_color(TeekoColorEnum.RED_COLOR)
         print("Awsome! Players are set up")
         print("The game will start with player a\n")
 
@@ -108,7 +109,7 @@ class TeekoUI(TeekoGame):
         print("Winner is {}".format(self._winner.get_name()))
 
     def play_turn(self, player: Player):
-        print("Your turn player : "+player.get_name())
+        print("Your turn player : " + player.get_name())
         player_piece_color = self.get_player_color(player)
 
         player_movement = player.move(self.board, player_piece_color)
@@ -124,7 +125,8 @@ class TeekoUI(TeekoGame):
             print("Players are not set up\n")
             self._initialise_player()
         print("Let's play Teeko\n")
-        gui_play_turn(self.board, self.get_black_player(), self.get_red_player())
+        gui_play_turn(self.board, self.get_black_player(),
+                      self.get_red_player())
 
     def get_players(self) -> List[Player]:
         return list(self.players.values())
@@ -142,7 +144,7 @@ class TeekoUI(TeekoGame):
         self.set_player(player=player, color=TeekoColorEnum.RED_COLOR)
 
     def set_player(self, player: Player, color: TeekoColorEnum):
-        if(color not in self.players.keys()):
+        if (color not in self.players.keys()):
             if len(self.players) == 2:
                 print("Players are already set up\n")
                 return

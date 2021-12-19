@@ -43,31 +43,31 @@ class Jasmine(AIPlayer):
                 elif awnser == "n":
                     return default_name
 
-    @staticmethod
-    def eval(board: Board, color: TeekoColorEnum) -> float:
+    def eval(self, board: Board) -> float:
 
         if board.is_game_over():
-            value = 100000
-        else:
-            player_position = board.get_coordinates_by_color(color)
-            opponent_position = board.get_positions_by_color(
-                get_opponent(color))
-            empty_position = board.get_empty_positions_coordinate()
-            value = 40*Jasmine.piece_distance_from_center_coef(
-                player_position) + 60*Jasmine.piece_distance_togehter_coef(player_position)
+            if board.is_color_winning(self.get_color()):
+                return 100000
+            else:
+                return -100000
+            
+        my_positions = board.get_coordinates_by_color(self.get_color())
+        opponent_positions = board.get_positions_by_color(get_opponent(self.get_color()))
+        empty_position = board.get_empty_positions_coordinate()
+        
+        value = 40*Jasmine.piece_distance_from_center_coef(my_positions) + 60*Jasmine.piece_distance_togehter_coef(my_positions)
 
         return value
 
-    @staticmethod
-    def minmax(board: Board, color: TeekoColorEnum, depth: int, is_max: bool, alpha: float, beta: float) -> float:
+    def minmax(self, board: Board, color: TeekoColorEnum, depth: int, alpha: float, beta: float) -> float:
         if depth == 0 or board.is_game_over():
-            return Jasmine.eval(board, color)
+            return self.eval(board)
 
-        if is_max:
+        if color == self.get_color():
             best_value = float("-inf")
             for next_bords in Jasmine.generate_next_board_states(board, color):
                 value = Jasmine.minmax(
-                    next_bords, get_opponent(color), depth-1, False, alpha, beta)
+                    next_bords, get_opponent(color), depth-1, alpha, beta)
                 best_value = max(best_value, value)
                 alpha = max(alpha, best_value)
                 if best_value >= beta:
@@ -78,7 +78,7 @@ class Jasmine(AIPlayer):
             best_value = float("inf")
             for next_bords in Jasmine.generate_next_board_states(board, color):
                 value = Jasmine.minmax(
-                    next_bords, get_opponent(color), depth-1, False, alpha, beta)
+                    next_bords, get_opponent(color), depth-1, alpha, beta)
                 best_value = min(best_value, value)
                 beta = min(beta, best_value)
                 if best_value <= alpha:
@@ -108,18 +108,16 @@ class Jasmine(AIPlayer):
 
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:
-        deep = 4
+        deep = 3
 
-        if len(board.get_empty_positions()) >= 23:
-            deep = 2
-        best_value = Jasmine.minmax(
-            board, color, deep, True, float("-inf"), float("inf"), )
+        
+        best_value = self.minmax(
+            board, color, deep, float("-inf"), float("inf"), )
         movements = self.generate_next_movements(board, color)
         while len(movements) > 0:
             movement = movements.pop()
             next_board = pickle.loads(pickle.dumps(board))
             next_board.move_piece(movement)
-            next_value = Jasmine.minmax(next_board, get_opponent(
-                color), deep-1, False, float("-inf"), float("inf"))
+            next_value = self.minmax(next_board, get_opponent(color), deep-1, float("-inf"), float("inf"))
             if next_value == best_value:
                 return movement

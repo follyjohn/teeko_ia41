@@ -10,6 +10,22 @@ import random
 
 class Alan(AIPlayer):
 
+    def __init__(self):
+        super().__init__()
+
+    def get_color(self) -> TeekoColorEnum:
+        return self._color
+
+    def get_label(self) -> str:
+        return self._label
+
+    def set_color(self, color: TeekoColorEnum):
+        if self._color is None:
+            self._color = color
+
+    def set_label(self, label: str):
+        self._label = label
+
     @staticmethod
     def _get_player_info() -> str:
         default_name = "Alan"
