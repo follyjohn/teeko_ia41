@@ -2,6 +2,7 @@ import configparser
 import pickle
 import re
 from typing import List
+from teeko.models.game.game_level import GameLevel
 from teeko.utils_functions import profile
 from teeko.models.coordinate import Coordinate
 from teeko.models.position import Position
@@ -21,7 +22,7 @@ def foo():
     def wrapper(func):
         @functools.wraps(func)
         async def wrapped(*args):
-             # Some fancy foo stuff
+            # Some fancy foo stuff
             return await func(*args)
         return wrapped
     return wrapper
@@ -36,10 +37,16 @@ def boo():
     return wrapper
 
 class Nada(AIPlayer):
-    
-    def __init__(self):
+
+    levels = [
+        GameLevel.EASY, GameLevel.MEDIUM, GameLevel.HARD, GameLevel.IMPOSSIBLE
+    ]
+    level = 4
+
+    def _init_(self):
         super().__init__()
-        
+        self.level = GameLevel.EASY
+
     def get_color(self) -> TeekoColorEnum:
         return self._color
 
@@ -52,6 +59,15 @@ class Nada(AIPlayer):
 
     def set_label(self, label: str):
         self._label = label
+
+    def has_level(self):
+        return True
+
+    def get_levels(self) -> List[GameLevel]:
+        return self.levels
+
+    def set_level(self, level: GameLevel):
+        self.level = level
 
     @staticmethod
     def _get_player_info() -> str:
@@ -85,14 +101,14 @@ class Nada(AIPlayer):
                 return 100000
             else:
                 return -100000
-            
+
         my_positions = board.get_coordinates_by_color(self.get_color())
         # opponent_positions = board.get_positions_by_color(get_opponent(self.get_color()))
         # empty_position = board.get_empty_positions_coordinate()
-        
+
         value = 40*Nada.piece_distance_from_center_coef(my_positions) + 60*Nada.piece_distance_togehter_coef(my_positions)
 
-        return value
+        return value 
 
     @staticmethod
     def eval_coordinate(color: TeekoColorEnum, coordinates: Coordinate, opponent_coordinates) -> float:
@@ -144,17 +160,15 @@ class Nada(AIPlayer):
                     coef += Position.eucludian_distance(pos_a, pos_b)
 
         return 100/(coef/piece_count)
-    
+
     # @foo()
     # @boo()
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:
         if len(board.get_empty_positions()) >= 23:
             deep = 2
-        # elif len(board.get_empty_positions()) >= 18:
-        #     deep = 3
         else :
-            deep = 2
+            deep = self.level
         best_value = self.minmax(board, color, deep, float("-inf"), float("inf"))
         print("best value : " + str(best_value))
         movements = self.generate_next_movements(board, color)
@@ -165,4 +179,3 @@ class Nada(AIPlayer):
             next_value = self.minmax(next_board, get_opponent(color), deep-1, float("-inf"), float("inf"))
             if next_value == best_value:
                 return movement
-

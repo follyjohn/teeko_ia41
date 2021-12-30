@@ -4,7 +4,7 @@
         date:      2021-11-21
         purpose:   IA Player class
 
-    Description: IA Player class for the game. This class is used to represent an IA player in the game.
+    Description: AI Player class for the game. This class is used to represent an AI player in the game.
     The particularity of this class is that it uses the Minimax algorithm to get the next move from the player.
 
 """
@@ -51,12 +51,12 @@ class AIPlayer(Player):
     @staticmethod
     def generate_next_movements(board: Board, color: TeekoColorEnum) -> List[Movement]:
         movements = []
-        if board.get_remaining_pieces_by_color(color) >= 1:
+        if board.get_remaining_pieces_by_color(color) >= 1: #  laying phase 
             departure_coord = Coordinate(-1, -1)
             for arrival_coord in board.get_empty_positions_coordinate():
                 movements.append(
                     Movement(departure_coord, arrival_coord, color_to_piece(color)))
-        else:
+        else: # after the laying phase
             departure_positions = board.get_positions_by_color(color)
             departure_coords = Position.get_coordinate_from_positions(
                 departure_positions)

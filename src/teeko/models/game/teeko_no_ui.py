@@ -6,6 +6,7 @@ from teeko.models.player.jasmine import Jasmine
 from teeko.models.player.nada import Nada
 from teeko.models.player.justine import Justine
 from teeko.models.player.yaw import Yaw
+from teeko.view.game import gui_play_turn
 from teeko.models.board import Board
 from teeko.models.player.alan import Alan
 from teeko.models.player.human_player import HumanPlayer
@@ -173,17 +174,18 @@ class TeekoNoUI(TeekoGame):
         self.board.display()
 
     def play_game(self):
-        if not len(self.players) == 2:
-            print("Players are not set up\n")
-            self._initialise_player()
-        print("Let's play Teeko\n")
-        next_player = self.get_black_player()
-        while not self.is_game_over():
-            self.play_turn(next_player)
-            if next_player == self.get_black_player():
-                next_player = self.get_red_player()
-            else:
-                next_player = self.get_black_player()
+        gui_play_turn(self.board, self.get_black_player(), self.get_red_player())
+        # if not len(self.players) == 2:
+        #     print("Players are not set up\n")
+        #     self._initialise_player()
+        # print("Let's play Teeko\n")
+        # next_player = self.get_black_player()
+        # while not self.is_game_over():
+        #     self.play_turn(next_player)
+        #     if next_player == self.get_black_player():
+        #         next_player = self.get_red_player()
+        #     else:
+        #         next_player = self.get_black_player()
 
         self.print_winner()
 

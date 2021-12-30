@@ -17,7 +17,7 @@ class Board:
     @property
     def size(self) -> int:
         return self._size
-        
+                
 
     @property
     def positions(self) -> List[Position]:

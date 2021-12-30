@@ -24,6 +24,19 @@ class Yaw(AIPlayer):
         super().__init__()
         self.level = GameLevel.EASY
 
+    def get_color(self) -> TeekoColorEnum:
+        return self._color
+
+    def get_label(self) -> str:
+        return self._label
+
+    def set_color(self, color: TeekoColorEnum):
+        if self._color is None:
+            self._color = color
+
+    def set_label(self, label: str):
+        self._label = label
+
     def get_levels(self) -> List[GameLevel]:
         return self.levels
 
@@ -138,7 +151,7 @@ class Yaw(AIPlayer):
 
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:
-        deep = self.level.value
+        deep = self.level
 
         if len(board.get_empty_positions()) >= 23:
             deep = 1

@@ -293,7 +293,16 @@ def gui_play_turn(board: Board, player_a: Player, player_b: Player):
 
     if board.is_game_over():
         Tk().wm_withdraw()  #to hide the main window
-        messagebox.showinfo('Continue', 'OK')
+        black_pieces = board.get_positions_by_color(
+            TeekoColorEnum.BLACK_COLOR)
+        red_pieces = board.get_positions_by_color(
+            TeekoColorEnum.RED_COLOR)
+
+        if Position.position_is_winning_position(black_pieces):
+            messagebox.showinfo('Game over !','Player {} win'.format(player_a.get_name()))
+
+        else:
+            messagebox.showinfo('Game over !', 'Player {} win'.format(player_b.get_name()))
 
     pygame.quit()
     exit()
