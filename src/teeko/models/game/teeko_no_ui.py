@@ -47,7 +47,7 @@ class TeekoNoUI(TeekoGame):
         print("Setting up players\n")
         print("Set up player a")
         if self.get_mode() == 1 or self.get_mode() == 2:
-            player_a = HumanPlayer()
+            player_a = HumanPlayer("Player A")
 
         else:
             print("Select an IA for player a")
@@ -68,7 +68,7 @@ class TeekoNoUI(TeekoGame):
                 print("Quitting game")
                 exit()
             else:
-                player_a = get_player_by_choice(int(player_a_choice))
+                player_a = get_player_by_choice(int(player_a_choice), "Player A")
                 if player_a.has_level() == True:
                     for level in player_a.get_levels():
                         print("{}. for level {}".format(
@@ -83,7 +83,7 @@ class TeekoNoUI(TeekoGame):
 
         print("Set up player b")
         if self.get_mode() == 1 or self.get_mode() == 3:
-            player_b = HumanPlayer()
+            player_b = HumanPlayer("Player B")
         else:
             print("Select an IA for player b")
             print("1. Nada")
@@ -103,7 +103,7 @@ class TeekoNoUI(TeekoGame):
                 print("Quitting game")
                 exit()
             else:
-                player_b = get_player_by_choice(int(player_b_choice))
+                player_b = get_player_by_choice(int(player_b_choice), "Player B")
                 if player_b.has_level() == True:
                     for level in player_b.get_levels():
                         print("{}. for level {}".format(
@@ -208,11 +208,13 @@ class TeekoNoUI(TeekoGame):
         if (color not in self.players.keys()):
             if len(self.players) == 2:
                 print("Players are already set up\n")
-                return
+                self.players = {}
+                self._initialise_player()
             if len(self.players) == 1:
                 if player._name == self.get_players()[0].get_name():
                     print("Player is already set up with the same name\n")
-                    return
+                    self.players = {}
+                    self._initialise_player()
             self.players[color] = player
         else:
             print("Player already exist\n")

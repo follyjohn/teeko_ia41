@@ -1,6 +1,5 @@
 """
     Metadata: 
-        author:    follyjohn
         date:      2021-11-21
         purpose:   Human Player class
 
@@ -21,8 +20,8 @@ from teeko.models.player.player import Player
 
 class HumanPlayer(Player):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, label: str):
+        super().__init__(label)
 
     def get_color(self) -> TeekoColorEnum:
         return self._color
@@ -42,13 +41,12 @@ class HumanPlayer(Player):
 
         Returns:str -- The name of the player as string
     """
-    @staticmethod
-    def _get_player_info() -> str:
+    def _get_player_info(self) -> str:
         config = configparser.RawConfigParser()
         with open('config.ini', 'r') as configfile:
             config.read_file(configfile)
             if config['DEFAULT']['noui'] == 'no':
-                username = "John"
+                username = set_human_player(self.get_label()+" enter your name : ")
                 return username
             else:
                 username = input("Enter username : ")

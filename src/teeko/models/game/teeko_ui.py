@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from teeko.view.select_level import select_level
 from teeko.view.game import gui_play_turn
 from teeko.view.select_ai import select_ai
 from teeko.view.select_game_mode import select_screen
@@ -16,6 +17,7 @@ from teeko.models.player.player import Player
 from teeko.models.position import Position
 from teeko.models.teeko_color import TeekoColorEnum, color_to_piece
 from teeko.models.teeko_piece import TeekoPieceEnum
+from teeko.view.show_message_utils import show_message, MessageType
 
 
 class TeekoUI(TeekoGame):
@@ -32,11 +34,14 @@ class TeekoUI(TeekoGame):
         print("Setting up players\n")
         print("Set up player a")
         if self.get_mode() == 1 or self.get_mode() == 2:
-            player_a = HumanPlayer()
+            player_a = HumanPlayer("Player A")
         else:
             print("Select an IA for player a")
             player_a_choice = select_ai()
-            player_a = get_player_by_choice(int(player_a_choice))
+            player_a = get_player_by_choice(int(player_a_choice), "Player A")
+            if player_a.has_level() == True:
+                selected_level = int(select_level())
+                player_a.set_level(selected_level)
             # if player_a.has_level() == True:
             #     for level in player_a.get_levels():
             #         print("{}. for level {}".format(
@@ -49,20 +54,14 @@ class TeekoUI(TeekoGame):
 
         print("Set up player b")
         if self.get_mode() == 1 or self.get_mode() == 3:
-            player_b = HumanPlayer()
+            player_b = HumanPlayer("Player B")
         else:
             print("Select an IA for player a")
             player_b_choice = select_ai()
-            player_b = get_player_by_choice(int(player_b_choice))
-            # if player_a.has_level() == True:
-            #     for level in player_a.get_levels():
-            #         print("{}. for level {}".format(
-            #             level.value, level._name_))
-            #     selected_level = int(input("Enter level: "))
-            #     while not selected_level in [l.value for l in player_a.get_levels()]:
-            #         print("Invalid level")
-            #         selected_level = int(input("Enter level: "))
-            #     player_a.set_level(selected_level)
+            player_b = get_player_by_choice(int(player_b_choice), "Player B")
+            if player_b.has_level() == True:
+                selected_level = int(select_level())
+                player_b.set_level(selected_level)
 
         # print()
         # print("Set up player b")
@@ -147,11 +146,15 @@ class TeekoUI(TeekoGame):
         if (color not in self.players.keys()):
             if len(self.players) == 2:
                 print("Players are already set up\n")
-                return
+                show_message('Players error','Players are already set up', MessageType.ERROR)
+                self.players = {}
+                self._initialise_player()
             if len(self.players) == 1:
                 if player._name == self.get_players()[0].get_name():
                     print("Player is already set up with the same name\n")
-                    return
+                    show_message('Player error','Player is already set up with the same name', MessageType.ERROR)
+                    self.players = {}
+                    self._initialise_player()
             self.players[color] = player
         else:
             print("Player already exist\n")

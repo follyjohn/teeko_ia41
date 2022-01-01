@@ -18,82 +18,34 @@ from time import time
 import functools
 
 
-def foo():
-    def wrapper(func):
-        @functools.wraps(func)
-        async def wrapped(*args):
-            # Some fancy foo stuff
-            return await func(*args)
-        return wrapped
-    return wrapper
+# def foo():
+#     def wrapper(func):
+#         @functools.wraps(func)
+#         async def wrapped(*args):
+#             # Some fancy foo stuff
+#             return await func(*args)
+#         return wrapped
+#     return wrapper
 
-def boo():
-    def wrapper(func):
-        @functools.wraps(func)
-        async def wrapped(*args):
-            # Some fancy boo stuff
-            return await func(*args)
-        return wrapped
-    return wrapper
+# def boo():
+#     def wrapper(func):
+#         @functools.wraps(func)
+#         async def wrapped(*args):
+#             # Some fancy boo stuff
+#             return await func(*args)
+#         return wrapped
+#     return wrapper
 
 class Nada(AIPlayer):
 
     levels = [
         GameLevel.EASY, GameLevel.MEDIUM, GameLevel.HARD, GameLevel.IMPOSSIBLE
     ]
-    level = 4
 
-    def _init_(self):
-        super().__init__()
+    def __init__(self, label: str):
+        self._name = "Nada"
         self.level = GameLevel.EASY
-
-    def get_color(self) -> TeekoColorEnum:
-        return self._color
-
-    def get_label(self) -> str:
-        return self._label
-
-    def set_color(self, color: TeekoColorEnum):
-        if self._color is None:
-            self._color = color
-
-    def set_label(self, label: str):
-        self._label = label
-
-    def has_level(self):
-        return True
-
-    def get_levels(self) -> List[GameLevel]:
-        return self.levels
-
-    def set_level(self, level: GameLevel):
-        self.level = level
-
-    @staticmethod
-    def _get_player_info() -> str:
-        default_name = "Nada"
-        config = configparser.RawConfigParser()
-        with open('config.ini', 'r') as configfile:
-            config.read_file(configfile)
-            if config['DEFAULT']['noui'] == 'no':
-                return default_name
-            else:
-                awnser = input(
-                    "Do you want to change the name of the ai ? (y/n), q to quit: ")
-                while awnser != "y" and awnser != "n" and awnser != "q":
-                    awnser = input(
-                        "Do you want to change the name of the ai ? (y/n), q to quit: ")
-                if awnser == "y":
-                    name = input("Enter the name of the ai : ")
-                    while not re.fullmatch(r'[a-zA-Z0-9]+', name):
-                        name = input(
-                            "Invalid name,use only letters and numbers, please try again : ")
-                    return str(name)
-                elif awnser == "q":
-                    print("Quitting")
-                    exit()
-                elif awnser == "n":
-                    return default_name
+        super().__init__(label, True)
 
     def eval(self, board: Board) -> float:
         if board.is_game_over():
@@ -108,7 +60,7 @@ class Nada(AIPlayer):
 
         value = 40*Nada.piece_distance_from_center_coef(my_positions) + 60*Nada.piece_distance_togehter_coef(my_positions)
 
-        return value 
+        return value
 
     @staticmethod
     def eval_coordinate(color: TeekoColorEnum, coordinates: Coordinate, opponent_coordinates) -> float:
@@ -168,7 +120,7 @@ class Nada(AIPlayer):
         if len(board.get_empty_positions()) >= 23:
             deep = 2
         else :
-            deep = self.level
+            deep = self.level.value
         best_value = self.minmax(board, color, deep, float("-inf"), float("inf"))
         print("best value : " + str(best_value))
         movements = self.generate_next_movements(board, color)

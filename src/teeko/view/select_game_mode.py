@@ -76,6 +76,10 @@ class SelectLevel:
         exit()
 
 
+def close():
+    exit()
+
+
 def select_screen():
     root = Tk()
     w = 404  # width for the Tk root
@@ -92,6 +96,7 @@ def select_screen():
     # and where it is placed
     root.geometry('%dx%d+%d+%d' % (w, h, x, y))
     root.resizable(width=0, height=0)
+    root.protocol('WM_DELETE_WINDOW', close)
     my_gui = SelectLevel(root)
     root.mainloop()
     return my_gui.value

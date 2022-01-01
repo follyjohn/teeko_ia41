@@ -48,7 +48,7 @@ class SelectAIGui:
                                    pady=10,
                                    font=("Roboto", 15))
         self.iavia_button.grid(row=5, column=0, pady=10)
-        
+
         self.iavia_button = Button(master,
                                    text="Alan",
                                    command=lambda: self.chose_ia(5),
@@ -78,6 +78,10 @@ class SelectAIGui:
         exit()
 
 
+def close():
+    exit()
+
+
 def select_ai():
     root = Tk()
     w = 404  # width for the Tk root
@@ -94,6 +98,7 @@ def select_ai():
     # and where it is placed
     root.geometry('%dx%d+%d+%d' % (w, h, x, y))
     root.resizable(width=0, height=0)
+    root.protocol('WM_DELETE_WINDOW', close)
     my_gui = SelectAIGui(root)
     root.mainloop()
     return my_gui.value

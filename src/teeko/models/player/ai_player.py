@@ -1,6 +1,5 @@
 """
     Metadata: 
-        author:    follyjohn
         date:      2021-11-21
         purpose:   IA Player class
 
@@ -9,10 +8,14 @@
 
 """
 import re
+import configparser
 import copy
 import pickle
 from abc import ABC, abstractmethod
 from typing import List
+from teeko.view.set_human_player import set_human_player
+from teeko.view.show_message_utils import yes_or_no
+from teeko.models.game.game_level import GameLevel
 from teeko.models.teeko_color import color_to_piece
 from teeko.models.position import Position
 from teeko.models.teeko_color import TeekoColorEnum
@@ -25,16 +28,65 @@ from teeko.models.player.player import Player
 
 class AIPlayer(Player):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, label: str, has_level: bool = False):
+        self._has_level = has_level
+        super().__init__(label)
+        
 
-    def has_level(self):
-        return False
+    def has_level(self) -> bool:
+        return self._has_level
 
-    @staticmethod
-    @abstractmethod
-    def _get_player_info() -> str:
-        pass
+    def get_color(self) -> TeekoColorEnum:
+        return self._color
+
+    def get_label(self) -> str:
+        return self._label
+
+    def set_color(self, color: TeekoColorEnum):
+        if self._color is None:
+            self._color = color
+
+    def set_label(self, label: str):
+        self._label = label
+
+    def get_levels(self) -> List[GameLevel]:
+        return self.levels
+
+    def set_level(self, level: GameLevel):
+        self.level = GameLevel(level)
+
+    def _get_player_info(self) -> str:
+        default_name = self._name
+        config = configparser.RawConfigParser()
+        with open('config.ini', 'r') as configfile:
+            config.read_file(configfile)
+            if config['DEFAULT']['noui'] == 'no':
+                # return default_name
+                if yes_or_no() == True:
+                    username = set_human_player("Type the new name of the ai :")
+                    return username
+                else:
+                    return default_name
+            else:
+                awnser = input(
+                    "Do you want to change the name of the ai ? (y/n), q to quit: "
+                )
+                while awnser != "y" and awnser != "n" and awnser != "q":
+                    awnser = input(
+                        "Do you want to change the name of the ai ? (y/n), q to quit: "
+                    )
+                if awnser == "y":
+                    name = input("Enter the name of the ai : ")
+                    while not re.fullmatch(r'[a-zA-Z0-9]+', name):
+                        name = input(
+                            "Invalid name,use only letters and numbers, please try again : "
+                        )
+                    return str(name)
+                elif awnser == "q":
+                    print("Quitting")
+                    exit()
+                elif awnser == "n":
+                    return default_name
 
     def print_player(self):
         super().print_player()
@@ -51,7 +103,7 @@ class AIPlayer(Player):
     @staticmethod
     def generate_next_movements(board: Board, color: TeekoColorEnum) -> List[Movement]:
         movements = []
-        if board.get_remaining_pieces_by_color(color) >= 1: #  laying phase 
+        if board.get_remaining_pieces_by_color(color) >= 1: #  laying phase
             departure_coord = Coordinate(-1, -1)
             for arrival_coord in board.get_empty_positions_coordinate():
                 movements.append(

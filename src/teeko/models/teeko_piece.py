@@ -2,7 +2,6 @@ from enum import Enum
 
 """
     Metadata: 
-        author:    follyjohn
         date:      2021-11-21
         purpose:   Teeko Piece category
 

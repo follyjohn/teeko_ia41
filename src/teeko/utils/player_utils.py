@@ -6,14 +6,14 @@ from teeko.models.player.justine import Justine
 from teeko.models.player.player import Player
 
 
-def get_player_by_choice(choice: int) -> Player:
+def get_player_by_choice(choice: int, label: str) -> Player:
     if choice == 1:
-        return Nada()
+        return Nada(label)
     elif choice == 2:
-        return Jasmine()
+        return Jasmine(label)
     elif choice == 3:
-        return Justine()
+        return Justine(label)
     elif choice == 4:
-        return Yaw()
+        return Yaw(label)
     elif choice == 5:
-        return Alan()
+        return Alan(label)

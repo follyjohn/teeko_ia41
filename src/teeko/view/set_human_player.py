@@ -49,6 +49,10 @@ class SetHumanPlayer:
         exit()
 
 
+def close():
+    exit()
+
+
 def set_human_player(desc: str):
     root = Tk()
     w = 450  # width for the Tk root
@@ -65,6 +69,7 @@ def set_human_player(desc: str):
     # and where it is placed
     root.geometry('%dx%d+%d+%d' % (w, h, x, y))
     root.resizable(width=0, height=0)
+    root.protocol('WM_DELETE_WINDOW', close)
     my_gui = SetHumanPlayer(root, desc)
     root.mainloop()
     return my_gui.value
