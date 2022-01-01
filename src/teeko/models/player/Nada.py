@@ -18,23 +18,6 @@ from time import time
 import functools
 
 
-# def foo():
-#     def wrapper(func):
-#         @functools.wraps(func)
-#         async def wrapped(*args):
-#             # Some fancy foo stuff
-#             return await func(*args)
-#         return wrapped
-#     return wrapper
-
-# def boo():
-#     def wrapper(func):
-#         @functools.wraps(func)
-#         async def wrapped(*args):
-#             # Some fancy boo stuff
-#             return await func(*args)
-#         return wrapped
-#     return wrapper
 
 class Nada(AIPlayer):
 
@@ -113,8 +96,6 @@ class Nada(AIPlayer):
 
         return 100/(coef/piece_count)
 
-    # @foo()
-    # @boo()
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:
         if len(board.get_empty_positions()) >= 23:

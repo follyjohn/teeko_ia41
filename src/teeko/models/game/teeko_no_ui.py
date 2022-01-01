@@ -70,6 +70,7 @@ class TeekoNoUI(TeekoGame):
             else:
                 player_a = get_player_by_choice(int(player_a_choice), "Player A")
                 if player_a.has_level() == True:
+                    print("Select a level for player a")
                     for level in player_a.get_levels():
                         print("{}. for level {}".format(
                             level.value, level._name_))
@@ -105,6 +106,7 @@ class TeekoNoUI(TeekoGame):
             else:
                 player_b = get_player_by_choice(int(player_b_choice), "Player B")
                 if player_b.has_level() == True:
+                    print("Select a level for player b")
                     for level in player_b.get_levels():
                         print("{}. for level {}".format(
                             level.value, level._name_))
@@ -119,14 +121,6 @@ class TeekoNoUI(TeekoGame):
         player_a.set_color(TeekoColorEnum.BLACK_COLOR)
         player_b.set_color(TeekoColorEnum.RED_COLOR)
 
-        # print()
-        # print("Set up player b")
-        # # player_b = Jasmine()
-        # while player_a.get_name == player_b.get_name:
-        #     print(
-        #         "Oops, player a and player b cannot have the same name. Please try again")
-        #     player_b = Alan()
-        # print()
         self.set_black_player(player_a)
         self.set_red_player(player_b)
         print("Awsome! Players are set up")
@@ -174,18 +168,18 @@ class TeekoNoUI(TeekoGame):
         self.board.display()
 
     def play_game(self):
-        gui_play_turn(self.board, self.get_black_player(), self.get_red_player())
-        # if not len(self.players) == 2:
-        #     print("Players are not set up\n")
-        #     self._initialise_player()
-        # print("Let's play Teeko\n")
-        # next_player = self.get_black_player()
-        # while not self.is_game_over():
-        #     self.play_turn(next_player)
-        #     if next_player == self.get_black_player():
-        #         next_player = self.get_red_player()
-        #     else:
-        #         next_player = self.get_black_player()
+        # gui_play_turn(self.board, self.get_black_player(), self.get_red_player())
+        if not len(self.players) == 2:
+            print("Players are not set up\n")
+            self._initialise_player()
+        print("Let's play Teeko\n")
+        next_player = self.get_black_player()
+        while not self.is_game_over():
+            self.play_turn(next_player)
+            if next_player == self.get_black_player():
+                next_player = self.get_red_player()
+            else:
+                next_player = self.get_black_player()
 
         self.print_winner()
 

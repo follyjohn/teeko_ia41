@@ -42,15 +42,6 @@ class TeekoUI(TeekoGame):
             if player_a.has_level() == True:
                 selected_level = int(select_level())
                 player_a.set_level(selected_level)
-            # if player_a.has_level() == True:
-            #     for level in player_a.get_levels():
-            #         print("{}. for level {}".format(
-            #             level.value, level._name_))
-            #     selected_level = int(input("Enter level: "))
-            #     while not selected_level in [l.value for l in player_a.get_levels()]:
-            #         print("Invalid level")
-            #         selected_level = int(input("Enter level: "))
-            #     player_a.set_level(selected_level)
 
         print("Set up player b")
         if self.get_mode() == 1 or self.get_mode() == 3:
@@ -63,14 +54,6 @@ class TeekoUI(TeekoGame):
                 selected_level = int(select_level())
                 player_b.set_level(selected_level)
 
-        # print()
-        # print("Set up player b")
-        # # player_b = Jasmine()
-        # while player_a.get_name == player_b.get_name:
-        #     print(
-        #         "Oops, player a and player b cannot have the same name. Please try again")
-        #     player_b = Alan()
-        # print()
         self.set_black_player(player_a)
         self.set_red_player(player_b)
         player_a.set_color(TeekoColorEnum.BLACK_COLOR)

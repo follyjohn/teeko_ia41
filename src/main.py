@@ -34,10 +34,4 @@ if __name__ == "__main__":
             else:
                 teeko = TeekoNoUI()
     teeko.play_game()
-# palyer = get_player_by_choice(5)
-# palyer.print_player()
-# ai = Nada()
-# ai.set_color(TeekoColorEnum.BLACK_COLOR)
-# ai2 = Alan()
-# ai2.set_color(TeekoColorEnum.RED_COLOR)
-# gui_play_turn(Board(), HumanPlayer(), ai)
+

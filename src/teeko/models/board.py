@@ -69,7 +69,7 @@ class Board:
     def decrement_remaining_pieces(self, color: TeekoColorEnum):
         self._remaining_pieces[color] -= 1
 
-    def move_piece(self, movement):  # TODO:type movement
+    def move_piece(self, movement): 
         if not movement.is_new_piece_movement():
             self.get_position_at_coordinate(
                 movement.get_origin_coord).set_piece(TeekoPieceEnum.EMPTY_PIECE)
@@ -145,8 +145,6 @@ class Board:
 
         return neighbors
 
-    # def get_coordinates_by_color(self, color: TeekoColorEnum) -> List[Coordinate]:
-    #     return Position.get_coordinate_from_positions(self.get_positions_by_color(color))
 
     def get_coordinates_by_color(self, color: TeekoColorEnum) -> List[Coordinate]:
         return [Coordinate(p.get_abs, p.get_ord) for p in self._positions if p.get_piece == color_to_piece(color)]

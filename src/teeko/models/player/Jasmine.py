@@ -35,8 +35,6 @@ class Jasmine(AIPlayer):
                 return -100000
 
         my_positions = board.get_coordinates_by_color(self.get_color())
-        # opponent_positions = board.get_positions_by_color(get_opponent(self.get_color()))
-        # empty_position = board.get_empty_positions_coordinate()
 
         value = 40 * Jasmine.piece_distance_from_center_coef(
             my_positions) + 60 * Jasmine.piece_distance_togehter_coef(
@@ -100,8 +98,6 @@ class Jasmine(AIPlayer):
 
         return 100 / (coef / piece_count)
 
-    # @foo()
-    # @boo()
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:
         deep = self.level.value

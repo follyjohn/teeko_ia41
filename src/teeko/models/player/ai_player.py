@@ -61,7 +61,6 @@ class AIPlayer(Player):
         with open('config.ini', 'r') as configfile:
             config.read_file(configfile)
             if config['DEFAULT']['noui'] == 'no':
-                # return default_name
                 if yes_or_no() == True:
                     username = set_human_player("Type the new name of the ai :")
                     return username
@@ -99,7 +98,6 @@ class AIPlayer(Player):
         return super().get_name()
 
     # Generate next possible moves form one state (state -> states)
-    # Generate next possible moves form one state (state -> states)
     @staticmethod
     def generate_next_movements(board: Board, color: TeekoColorEnum) -> List[Movement]:
         movements = []
@@ -135,4 +133,3 @@ class AIPlayer(Player):
             boards.append(AIPlayer.generate_next_board_state(board, movement))
         return boards
 
-# Alan Noel Leonie Israël
