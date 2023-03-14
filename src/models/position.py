@@ -1,6 +1,6 @@
 from typing import List
-from teeko.models.coordinate import Coordinate
-from teeko.models.teeko_piece import TeekoPieceEnum
+from src.models.coordinate import Coordinate
+from src.models.teeko_piece import TeekoPieceEnum
 import math
 
 

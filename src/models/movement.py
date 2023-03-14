@@ -1,10 +1,10 @@
 from typing import List
-from teeko.models.position import Position
-from teeko.models.board import Board
+from src.models.position import Position
+from src.models.board import Board
 import re
-from teeko.models.coordinate import Coordinate
-from teeko.models.teeko_color import piece_to_color
-from teeko.models.teeko_piece import TeekoPieceEnum
+from src.models.coordinate import Coordinate
+from src.models.teeko_color import piece_to_color
+from src.models.teeko_piece import TeekoPieceEnum
 
 
 class Movement:

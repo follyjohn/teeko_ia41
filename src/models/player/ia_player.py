@@ -1,5 +1,5 @@
 """
-    Metadata: 
+    Metadata:
         author:    follyjohn
         date:      2021-11-21
         purpose:   IA Player class
@@ -12,14 +12,14 @@ import re
 import copy
 import pickle
 from typing import List
-from teeko.models.teeko_color import color_to_piece
-from teeko.models.position import Position
-from teeko.models.teeko_color import TeekoColorEnum
+from src.models.teeko_color import color_to_piece
+from src.models.position import Position
+from src.models.teeko_color import TeekoColorEnum
 
-from teeko.models.board import Board
-from teeko.models.coordinate import Coordinate
-from teeko.models.movement import Movement
-from teeko.models.player.player import Player
+from src.models.board import Board
+from src.models.coordinate import Coordinate
+from src.models.movement import Movement
+from src.models.player.player import Player
 
 
 class IAPlayer(Player):

@@ -1,5 +1,5 @@
 """
-    Metadata: 
+    Metadata:
         author:    follyjohn
         date:      2021-11-21
         purpose:   Player class
@@ -7,14 +7,14 @@
     Description: Player class for the game. This class is used to represent a player in the game.
     It's the base class for the HumanPlayer and the AIPlayer classes.
     It contains abstract methods that must be implemented by the subclasses for methods to get the next move from the player.
-            
+
 """
 import re
 from abc import ABC, abstractmethod
-from teeko.models.teeko_color import TeekoColorEnum
+from src.models.teeko_color import TeekoColorEnum
 
-from teeko.models.board import Board
-from teeko.models.movement import Movement
+from src.models.board import Board
+from src.models.movement import Movement
 
 
 class Player(ABC):
@@ -28,7 +28,7 @@ class Player(ABC):
     @abstractmethod
     def _get_player_info() -> str:
         pass
-    
+
 
     @abstractmethod
     def __init__(self):

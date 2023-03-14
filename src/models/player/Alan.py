@@ -1,7 +1,7 @@
-from teeko.models.teeko_color import TeekoColorEnum
-from teeko.models.movement import Movement
-from teeko.models.board import Board
-from teeko.models.player.ia_player import IAPlayer
+from src.models.teeko_color import TeekoColorEnum
+from src.models.movement import Movement
+from src.models.board import Board
+from src.models.player.ia_player import IAPlayer
 
 import random
 

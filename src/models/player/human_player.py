@@ -1,21 +1,21 @@
 """
-    Metadata: 
+    Metadata:
         author:    follyjohn
         date:      2021-11-21
         purpose:   Human Player class
 
     Description: Human Player class for the game. This class is used to represent a human player in the game.
-    
-    
+
+
 """
 import re
-from teeko.models.teeko_color import color_to_piece
-from teeko.models.teeko_color import TeekoColorEnum
+from src.models.teeko_color import color_to_piece
+from src.models.teeko_color import TeekoColorEnum
 
-from teeko.models.board import Board
-from teeko.models.coordinate import Coordinate
-from teeko.models.movement import Movement
-from teeko.models.player.player import Player
+from src.models.board import Board
+from src.models.coordinate import Coordinate
+from src.models.movement import Movement
+from src.models.player.player import Player
 
 
 class HumanPlayer(Player):

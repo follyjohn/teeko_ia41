@@ -1,14 +1,14 @@
 """
-    Metadata: 
+    Metadata:
         author:    follyjohn
         date:      2021-11-21
         purpose:   TeeKo Color type Enum
-        
+
     Description: Enum class for the game. This class is used to represent the different colors of pieces in the game.
 """
 from enum import Enum
 
-from teeko.models.teeko_piece import TeekoPieceEnum
+from src.models.teeko_piece import TeekoPieceEnum
 
 class TeekoColorEnum(Enum):
     BLACK_COLOR = "black"

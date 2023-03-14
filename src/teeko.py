@@ -1,25 +1,25 @@
 
 from enum import Enum
 from typing import Any, Dict, List, Optional
-from teeko.models.player.Jasmine import Jasmine
-from teeko.models.player.Nada import Nada
-from teeko.models.player.Justine import Justine
+from src.models.player.Jasmine import Jasmine
+from src.models.player.Nada import Nada
+from src.models.player.Justine import Justine
 
-from teeko.models.board import Board
-from teeko.models.game import Game
-from teeko.models.player.Alan import Alan
-from teeko.models.player.human_player import HumanPlayer
-from teeko.models.player.player import Player
-from teeko.models.position import Position
-from teeko.models.teeko_color import TeekoColorEnum, color_to_piece
-from teeko.models.teeko_piece import TeekoPieceEnum
+from src.models.board import Board
+from src.models.game import Game
+from src.models.player.Alan import Alan
+from src.models.player.human_player import HumanPlayer
+from src.models.player.player import Player
+from src.models.position import Position
+from src.models.teeko_color import TeekoColorEnum, color_to_piece
+from src.models.teeko_piece import TeekoPieceEnum
 
 
 class Teeko(Game):
 
     def __init__(self):
         super().__init__()
-        
+
 
     def _introduce_game(self):
         print("Welcome to Teeko\n")
@@ -40,7 +40,7 @@ class Teeko(Game):
         self.set_red_player(player_b)
         print("Awsome! Players are set up")
         print("The game will start with player a\n")
-        
+
 
     def _initilise_board(self):
         print("The game board is set up")
@@ -48,7 +48,7 @@ class Teeko(Game):
         self.board = Board()
         self.board.display()
 
-        
+
     def is_game_over(self) -> bool:
         black_pieces = self.board.get_positions_by_color(TeekoColorEnum.BLACK_COLOR)
         red_pieces = self.board.get_positions_by_color(TeekoColorEnum.RED_COLOR)
@@ -58,22 +58,22 @@ class Teeko(Game):
                 self._winner = self.get_black_player()
                 print("Game over!")
                 return True
-            
+
         if len(red_pieces) == 4:
             if Position.position_is_winning_position(red_pieces):
                 self._winner = self.get_red_player()
                 print("Game over!")
                 return True
-            
+
         return False
 
     def print_winner(self):
         print("Winner is {}".format(self._winner.get_name()))
-        
+
     def play_turn(self, player: Player):
         print("Your turn player : "+player.get_name())
         player_piece_color = self.get_player_color(player)
-        
+
         player_movement = player.move(self.board, player_piece_color)
         while not player_movement.is_legal_movement(self.board):
             player_movement = player.move(self.board, player_piece_color)
@@ -98,7 +98,7 @@ class Teeko(Game):
 
         self.print_winner()
 
-    
+
     def get_players(self) -> List[Player]:
         return list(self.players.values())
 
@@ -126,13 +126,10 @@ class Teeko(Game):
             self.players[color] = player
         else:
             print("Player already exist\n")
-        
+
     def get_player_color(self, player: Player) -> Optional[TeekoColorEnum]:
         for color, p in self.players.items():
             if p == player:
                 return color
         print("Player not found\n")
         return None
-
-    
-

@@ -4,17 +4,17 @@ import pygame
 import copy
 import time
 from pygame.draw import circle
-from teeko.models.player.Justine import Justine
-from teeko.models.teeko_color import color_to_piece
-from teeko.models.teeko_color import get_opponent
-from teeko.models.teeko_color import piece_to_color
-from teeko.models.movement import Movement
-from teeko.models.teeko_color import TeekoColorEnum
-from teeko.models.coordinate import Coordinate
+from src.models.player.Justine import Justine
+from src.models.teeko_color import color_to_piece
+from src.models.teeko_color import get_opponent
+from src.models.teeko_color import piece_to_color
+from src.models.movement import Movement
+from src.models.teeko_color import TeekoColorEnum
+from src.models.coordinate import Coordinate
 
-from teeko.models.board import Board
-from teeko.models.position import Position
-from teeko.models.teeko_piece import TeekoPieceEnum
+from src.models.board import Board
+from src.models.position import Position
+from src.models.teeko_piece import TeekoPieceEnum
 
 
 TEEKO_BOARD_WIDTH = 720
@@ -74,8 +74,7 @@ def generate_pieces():
 
 
 def create_board_surf():  # create board surface with image background
-    teeko_board = pygame.image.load(
-        "./src/teeko/view/1x/Artboard 1.png").convert_alpha()
+    teeko_board = pygame.image.load("./src/teeko/view/1x/Artboard 1.png").convert_alpha()
     teeko_board = pygame.transform.scale(
         teeko_board, (TEEKO_BOARD_WIDTH, TEEKO_BOARD_HEIGHT))
     return teeko_board
@@ -165,7 +164,7 @@ drop_pos = None
 player_color = TeekoColorEnum.BLACK_COLOR
 
 ia = Justine()
- 
+
 continuer = True
 while continuer:
     if board.is_game_over():

@@ -1,4 +1,4 @@
-from teeko.models.player.Justine import Justine
+from src.models.player.Justine import Justine
 
 
 class Yaw(Justine):
