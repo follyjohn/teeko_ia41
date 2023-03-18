@@ -1,23 +1,19 @@
-from typing import List, Optional, Dict, Any
-from src.models.coordinate import Coordinate
-import copy
-from src.models.position import Position
-from src.models.teeko_piece import TeekoPieceEnum
-from src.models.teeko_color import TeekoColorEnum, color_to_piece, piece_to_color
+from typing import List, Dict
+from .coordinate import Coordinate
+from .position import Position
+from .teeko_piece import TeekoPieceEnum
+from .teeko_color import TeekoColorEnum, color_to_piece, piece_to_color
 
 
 class Board:
-
     def __init__(self, size: int = 5, piece_count: int = 4):
         self._size = size
         self._piece_count = piece_count
         self._positions = self.generate()
 
-
     @property
     def size(self) -> int:
         return self._size
-
 
     @property
     def positions(self) -> List[Position]:
@@ -38,13 +34,18 @@ class Board:
         return self.get_position(abs, obs).get_piece
 
     def is_game_over(self) -> bool:
-        if self.piece_count_by_color(TeekoColorEnum.BLACK_COLOR) < 0 or self.piece_count_by_color(TeekoColorEnum.RED_COLOR) < 0:
+        if (
+            self.piece_count_by_color(TeekoColorEnum.BLACK_COLOR) < 0
+            or self.piece_count_by_color(TeekoColorEnum.RED_COLOR) < 0
+        ):
             return False
 
         red_positions = self.get_positions_by_color(TeekoColorEnum.RED_COLOR)
         black_positions = self.get_positions_by_color(TeekoColorEnum.BLACK_COLOR)
 
-        return Position.position_is_winning_position(red_positions) or Position.position_is_winning_position(black_positions)
+        return Position.position_is_winning_position(red_positions) or Position.position_is_winning_position(
+            black_positions
+        )
 
     def is_color_winning(self, color: TeekoColorEnum) -> bool:
         return Position.position_is_winning_position(self.get_positions_by_color(color))
@@ -60,10 +61,8 @@ class Board:
 
         print("Remaining pieces:")
 
-        print("Black:", self.get_remaining_pieces_by_color(
-            TeekoColorEnum.BLACK_COLOR))
-        print("Red:", self.get_remaining_pieces_by_color(
-            TeekoColorEnum.RED_COLOR))
+        print("Black:", self.get_remaining_pieces_by_color(TeekoColorEnum.BLACK_COLOR))
+        print("Red:", self.get_remaining_pieces_by_color(TeekoColorEnum.RED_COLOR))
         print()
 
     def decrement_remaining_pieces(self, color: TeekoColorEnum):
@@ -71,11 +70,9 @@ class Board:
 
     def move_piece(self, movement):  # TODO:type movement
         if not movement.is_new_piece_movement():
-            self.get_position_at_coordinate(
-                movement.get_origin_coord).set_piece(TeekoPieceEnum.EMPTY_PIECE)
+            self.get_position_at_coordinate(movement.get_origin_coord).set_piece(TeekoPieceEnum.EMPTY_PIECE)
 
-        self.get_position_at_coordinate(
-            movement.get_destination_coord).set_piece(movement.get_piece_color)
+        self.get_position_at_coordinate(movement.get_destination_coord).set_piece(movement.get_piece_color)
 
     def get_position(self, x: int, y: int) -> Position:
         return [p for p in self._positions if p.get_abs == x and p.get_ord == y][0]
@@ -108,7 +105,7 @@ class Board:
         return [p for p in self._positions if p.get_piece == TeekoPieceEnum.EMPTY_PIECE]
 
     def get_empty_positions_coordinate(self) -> List[Coordinate]:
-      return Position.get_coordinate_from_positions(self.get_empty_positions())
+        return Position.get_coordinate_from_positions(self.get_empty_positions())
 
     def get_neighbors(self, x: int, y: int) -> List[Position]:
         neighbors: List[Position] = []

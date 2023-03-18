@@ -1,20 +1,17 @@
-from os import times
 from typing import List
 import pygame
 import copy
 import time
-from pygame.draw import circle
-from src.models.player.Justine import Justine
-from src.models.teeko_color import color_to_piece
-from src.models.teeko_color import get_opponent
-from src.models.teeko_color import piece_to_color
-from src.models.movement import Movement
-from src.models.teeko_color import TeekoColorEnum
-from src.models.coordinate import Coordinate
-
-from src.models.board import Board
-from src.models.position import Position
-from src.models.teeko_piece import TeekoPieceEnum
+from models.Justine import Justine
+from .teeko_color import color_to_piece
+from .teeko_color import get_opponent
+from .teeko_color import piece_to_color
+from .movement import Movement
+from .teeko_color import TeekoColorEnum
+from .coordinate import Coordinate
+from .board import Board
+from .position import Position
+from .teeko_piece import TeekoPieceEnum
 
 
 TEEKO_BOARD_WIDTH = 720
@@ -74,9 +71,8 @@ def generate_pieces():
 
 
 def create_board_surf():  # create board surface with image background
-    teeko_board = pygame.image.load("./src/teeko/view/1x/Artboard 1.png").convert_alpha()
-    teeko_board = pygame.transform.scale(
-        teeko_board, (TEEKO_BOARD_WIDTH, TEEKO_BOARD_HEIGHT))
+    teeko_board = pygame.image.load("src/assets/Artboard 1.png").convert_alpha()
+    teeko_board = pygame.transform.scale(teeko_board, (TEEKO_BOARD_WIDTH, TEEKO_BOARD_HEIGHT))
     return teeko_board
 
 
@@ -84,14 +80,11 @@ def update_board(surface, positions, board: Board):
     for i in range(TEEKO_BOARD_SIZE):
         for j in range(TEEKO_BOARD_SIZE):
             try:
-                positions[j][i].set_color(board.get_position_at_coordinate(
-                    Coordinate(i, j)).get_piece.value)
+                positions[j][i].set_color(board.get_position_at_coordinate(Coordinate(i, j)).get_piece.value)
                 if positions[j][i].color == TeekoPieceEnum.BLACK_PIECE.value:
-                    pygame.draw.circle(
-                        surface, 'black', (positions[j][i].abs_pos, positions[j][i].ord_pos), 40)
+                    pygame.draw.circle(surface, "black", (positions[j][i].abs_pos, positions[j][i].ord_pos), 40)
                 elif positions[j][i].color == TeekoPieceEnum.RED_PIECE.value:
-                    pygame.draw.circle(
-                        surface, 'red', (positions[j][i].abs_pos, positions[j][i].ord_pos), 40)
+                    pygame.draw.circle(surface, "red", (positions[j][i].abs_pos, positions[j][i].ord_pos), 40)
             except IndexError:
                 pass
 
@@ -105,7 +98,12 @@ def get_piece_under_mouse(positions: List[TeekooPiece]):
         if x >= 0 and y >= 0:
             for i in range(TEEKO_BOARD_SIZE):
                 for j in range(TEEKO_BOARD_SIZE):
-                    if x <= positions[j][i].abs_pos + 30 and x >= positions[j][i].abs_pos-30 and y <= positions[j][i].ord_pos + 30 and y >= positions[j][i].ord_pos - 30:
+                    if (
+                        x <= positions[j][i].abs_pos + 30
+                        and x >= positions[j][i].abs_pos - 30
+                        and y <= positions[j][i].ord_pos + 30
+                        and y >= positions[j][i].ord_pos - 30
+                    ):
                         if positions[j][i].color is not None:
                             return positions[j][i]
     except IndexError:
@@ -122,7 +120,12 @@ def get_piece_clicked(positions: List[TeekooPiece], board: Board):
             if x >= 0 and y >= 0:
                 for i in range(TEEKO_BOARD_SIZE):
                     for j in range(TEEKO_BOARD_SIZE):
-                        if x <= positions[j][i].abs_pos + 30 and x >= positions[j][i].abs_pos-30 and y <= positions[j][i].ord_pos + 30 and y >= positions[j][i].ord_pos - 30:
+                        if (
+                            x <= positions[j][i].abs_pos + 30
+                            and x >= positions[j][i].abs_pos - 30
+                            and y <= positions[j][i].ord_pos + 30
+                            and y >= positions[j][i].ord_pos - 30
+                        ):
                             return board.get_position_at_coordinate(Coordinate(i, j))
         except IndexError:
             pass
@@ -132,7 +135,14 @@ def get_piece_clicked(positions: List[TeekooPiece], board: Board):
 def blink_positions(neighor_pieces: List[Position], positions: List[TeekooPiece], ecran, color: TeekoColorEnum):
     for ele in neighor_pieces:
         pygame.draw.circle(
-            ecran, color.value, (positions[ele.get_abs][ele.get_ord].ord_pos, positions[ele.get_abs][ele.get_ord].abs_pos), 38, 4)
+            ecran,
+            color.value,
+            (positions[ele.get_abs][ele.get_ord].ord_pos, positions[ele.get_abs][ele.get_ord].abs_pos),
+            38,
+            4,
+        )
+
+
 # pygame.draw.circle(image, (0, 0, 0), (127, 127), 35)
 # pygame.draw.circle(image, (0, 0, 0), (242, 127), 35)
 # pygame.draw.circle(image, (0, 0, 0), (242, 243), 35)
@@ -182,7 +192,7 @@ while continuer:
     # board.display()
 
     piece = get_piece_under_mouse(positions)
-    if piece != None:
+    if piece is not None:
         x, y, _ = piece.to_tuple()
         pygame.draw.circle(ecran, player_color.value, (x, y), 40, 2)
     pygame.display.flip()
@@ -193,14 +203,18 @@ while continuer:
         if event.type == pygame.MOUSEBUTTONDOWN:
             selected_piece = get_piece_clicked(positions, board)
 
-            if selected_piece != None:
-                if selected_piece.get_piece.value != TeekoPieceEnum.EMPTY_PIECE.value and board.get_remaining_pieces_by_color(piece_to_color(selected_piece.get_piece)) > 0:
+            if selected_piece is not None:
+                if (
+                    selected_piece.get_piece.value != TeekoPieceEnum.EMPTY_PIECE.value
+                    and board.get_remaining_pieces_by_color(piece_to_color(selected_piece.get_piece)) > 0
+                ):
                     selected_piece = None
                     old_position = None
                     neighor_pieces = None
                 elif selected_piece.get_piece == TeekoPieceEnum.EMPTY_PIECE and neighor_pieces is None:
                     mouvement = Movement(
-                        Coordinate(-1, -1), selected_piece.get_coordinate(), color_to_piece(player_color))
+                        Coordinate(-1, -1), selected_piece.get_coordinate(), color_to_piece(player_color)
+                    )
                     if mouvement.is_legal_movement(board):
                         board.move_piece(mouvement)
                         positions = update_board(ecran, positions, board)
@@ -216,21 +230,19 @@ while continuer:
                             neighor_pieces = None
                         else:
                             mouvement = Movement(
-                                old_position.get_coordinate(), new_piece.get_coordinate(), color_to_piece(player_color))
+                                old_position.get_coordinate(), new_piece.get_coordinate(), color_to_piece(player_color)
+                            )
                             if mouvement.is_legal_movement(board):
                                 board.move_piece(mouvement)
-                                positions = update_board(
-                                    ecran, positions, board)
+                                positions = update_board(ecran, positions, board)
                                 player_color = get_opponent(player_color)
                                 neighor_pieces = None
                                 selected_piece = None
                                 old_position = None
                     elif player_color == piece_to_color(selected_piece.get_piece):
-                        neighor_pieces = board.get_neighbors_empty(
-                            selected_piece.get_abs, selected_piece.get_ord)
+                        neighor_pieces = board.get_neighbors_empty(selected_piece.get_abs, selected_piece.get_ord)
                         old_position = copy.deepcopy(selected_piece)
-                        blink_positions(
-                            neighor_pieces, positions, ecran, player_color)
+                        blink_positions(neighor_pieces, positions, ecran, player_color)
                     else:
                         neighor_pieces = None
                         old_position = None

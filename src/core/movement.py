@@ -1,14 +1,11 @@
-from typing import List
-from src.models.position import Position
-from src.models.board import Board
-import re
-from src.models.coordinate import Coordinate
-from src.models.teeko_color import piece_to_color
-from src.models.teeko_piece import TeekoPieceEnum
+from .position import Position
+from .board import Board
+from .coordinate import Coordinate
+from .teeko_color import piece_to_color
+from .teeko_piece import TeekoPieceEnum
 
 
 class Movement:
-
     def __init__(self, origin_coord: Coordinate, destination_coord: Coordinate):
         self._origin_coord = origin_coord
         self._destination_coord = destination_coord
@@ -47,7 +44,10 @@ class Movement:
         if self.get_piece_color is None:
             print("Piece color not set")
             return False
-        elif self.is_new_piece_movement() and board.get_remaining_pieces_by_color(piece_to_color(self.get_piece_color)) == 0:
+        elif (
+            self.is_new_piece_movement()
+            and board.get_remaining_pieces_by_color(piece_to_color(self.get_piece_color)) == 0
+        ):
             print("No more pieces of this color")
             return False
         elif not self.is_new_piece_movement():
@@ -58,7 +58,10 @@ class Movement:
             if board.get_remaining_pieces_by_color(piece_to_color(self.get_piece_color)) > 0:
                 print("Piece color not empty")
                 return False
-            if self.get_origin_coord.get_x == self.get_destination_coord.get_x and self.get_origin_coord.get_y == self.get_destination_coord.get_y:
+            if (
+                self.get_origin_coord.get_x == self.get_destination_coord.get_x
+                and self.get_origin_coord.get_y == self.get_destination_coord.get_y
+            ):
                 print("The movement is not a step")
                 return False
             if board.get_piece_at_coordinate(self.get_origin_coord) == TeekoPieceEnum.EMPTY_PIECE:

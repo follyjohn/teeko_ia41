@@ -1,25 +1,20 @@
-
-from enum import Enum
-from typing import Any, Dict, List, Optional
-from src.models.player.Jasmine import Jasmine
-from src.models.player.Nada import Nada
-from src.models.player.Justine import Justine
-
-from src.models.board import Board
-from src.models.game import Game
-from src.models.player.Alan import Alan
-from src.models.player.human_player import HumanPlayer
-from src.models.player.player import Player
-from src.models.position import Position
-from src.models.teeko_color import TeekoColorEnum, color_to_piece
-from src.models.teeko_piece import TeekoPieceEnum
+from typing import List, Optional
+from .teeko_color import TeekoColorEnum
+from .position import Position
+from models.Nada import Nada
+from models.Alan import Alan
+from core.player import Player
+from core.human_player import HumanPlayer
+from board import Board
 
 
-class Teeko(Game):
-
+class Teeko:
     def __init__(self):
-        super().__init__()
-
+        self.players = {}
+        self._winner: Player = None
+        self._introduce_game()
+        self._initialise_player()
+        self._initilise_board()
 
     def _introduce_game(self):
         print("Welcome to Teeko\n")
@@ -41,13 +36,11 @@ class Teeko(Game):
         print("Awsome! Players are set up")
         print("The game will start with player a\n")
 
-
     def _initilise_board(self):
         print("The game board is set up")
         print("The board is empty\n")
         self.board = Board()
         self.board.display()
-
 
     def is_game_over(self) -> bool:
         black_pieces = self.board.get_positions_by_color(TeekoColorEnum.BLACK_COLOR)
@@ -71,7 +64,7 @@ class Teeko(Game):
         print("Winner is {}".format(self._winner.get_name()))
 
     def play_turn(self, player: Player):
-        print("Your turn player : "+player.get_name())
+        print("Your turn player : " + player.get_name())
         player_piece_color = self.get_player_color(player)
 
         player_movement = player.move(self.board, player_piece_color)
@@ -94,10 +87,7 @@ class Teeko(Game):
                 next_player = self.get_black_player()
 
             self.board.display()
-
-
         self.print_winner()
-
 
     def get_players(self) -> List[Player]:
         return list(self.players.values())
@@ -114,8 +104,8 @@ class Teeko(Game):
     def set_red_player(self, player: Player):
         self.set_player(player=player, color=TeekoColorEnum.RED_COLOR)
 
-    def set_player(self, player: Player, color:TeekoColorEnum):
-        if(color not in self.players.keys()):
+    def set_player(self, player: Player, color: TeekoColorEnum):
+        if color not in self.players.keys():
             if len(self.players) == 2:
                 print("Players are already set up\n")
                 return

@@ -1,40 +1,36 @@
-import copy
 import pickle
 from typing import List
-from src.utils import profile
-from src.models.coordinate import Coordinate
-from src.models.position import Position
-from src.models.teeko_color import get_opponent
-from src.models.teeko_color import TeekoColorEnum
-from src.models.movement import Movement
-from src.models.board import Board
-from src.models.player.ia_player import IAPlayer
-
-import random
+from core.utils import profile
+from core.coordinate import Coordinate
+from core.position import Position
+from core.teeko_color import get_opponent
+from core.teeko_color import TeekoColorEnum
+from core.movement import Movement
+from core.board import Board
+from core.ia_player import IAPlayer
 
 
 class Justine(IAPlayer):
-
     @staticmethod
     def _get_player_info() -> str:
         return str("Justine")
 
     @staticmethod
     def eval(board: Board, color: TeekoColorEnum) -> float:
-
         if board.is_game_over():
             value = 100000
         else:
             player_position = board.get_positions_by_color(color)
             opponent_position = board.get_positions_by_color(get_opponent(color))
 
-            value = 40*Justine.piece_distance_from_center_coef(player_position) + 60*Justine.piece_distance_togehter_coef(opponent_position)
+            value = 40 * Justine.piece_distance_from_center_coef(
+                player_position
+            ) + 60 * Justine.piece_distance_togehter_coef(opponent_position)
             # board.display()
             # print("value: ", value)
 
         # if color == TeekoColorEnum.RED_COLOR:
         #     value = -value
-
 
         return value
 
@@ -46,7 +42,7 @@ class Justine(IAPlayer):
         if color == TeekoColorEnum.BLACK_COLOR:
             best_value = float("-inf")
             for next_bords in Justine.generate_next_board_states(board, color):
-                value = Justine.minmax(next_bords, get_opponent(color), depth-1, alpha, beta)
+                value = Justine.minmax(next_bords, get_opponent(color), depth - 1, alpha, beta)
                 best_value = max(best_value, value)
                 alpha = max(alpha, best_value)
                 if best_value >= beta:
@@ -56,7 +52,7 @@ class Justine(IAPlayer):
         else:
             best_value = float("inf")
             for next_bords in Justine.generate_next_board_states(board, color):
-                value = Justine.minmax(next_bords, get_opponent(color), depth-1, alpha, beta)
+                value = Justine.minmax(next_bords, get_opponent(color), depth - 1, alpha, beta)
                 best_value = min(best_value, value)
                 beta = min(beta, best_value)
                 if best_value <= alpha:
@@ -64,14 +60,18 @@ class Justine(IAPlayer):
                 beta = min(beta, best_value)
             return best_value
 
-
     @staticmethod
     def piece_distance_from_center_coef(positions: List[Position]) -> float:
         piece_count = len(positions)
         if piece_count == 0:
             return 0
-        return 100/((sum([Position.eucludian_distance(pos.get_coordinate(), Coordinate(2, 2)) for pos in positions])/piece_count)+1)
-
+        return 100 / (
+            (
+                sum([Position.eucludian_distance(pos.get_coordinate(), Coordinate(2, 2)) for pos in positions])
+                / piece_count
+            )
+            + 1
+        )
 
     @staticmethod
     def piece_distance_togehter_coef(positions: List[Position]) -> float:
@@ -84,9 +84,7 @@ class Justine(IAPlayer):
                 if pos_a != pos_b:
                     coef += Position.eucludian_distance(pos_a.get_coordinate(), pos_b.get_coordinate())
 
-        return 100/(coef/piece_count)
-
-
+        return 100 / (coef / piece_count)
 
     @profile
     def move(self, board: Board, color: TeekoColorEnum) -> Movement:

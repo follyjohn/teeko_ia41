@@ -1,8 +1,7 @@
-from src.models.player.Justine import Justine
+from models.Justine import Justine
 
 
 class Yaw(Justine):
-
     @staticmethod
     def _get_player_info() -> str:
         return str("Yaw")

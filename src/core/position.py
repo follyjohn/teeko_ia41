@@ -1,11 +1,10 @@
 from typing import List
-from src.models.coordinate import Coordinate
-from src.models.teeko_piece import TeekoPieceEnum
+from .coordinate import Coordinate
+from .teeko_piece import TeekoPieceEnum
 import math
 
 
 class Position:
-
     def __init__(self, abs: int, ord: int, piece: TeekoPieceEnum):
         self._abs = abs
         self._ord = ord
@@ -22,7 +21,6 @@ class Position:
     @property
     def get_piece(self) -> TeekoPieceEnum:
         return self._piece
-
 
     def get_coordinate(self) -> Coordinate:
         return Coordinate(self._abs, self._ord)
@@ -43,8 +41,7 @@ class Position:
     def is_positions_square(positions: list) -> bool:
         if len(positions) != 4:
             return False
-        positions_coordinates = Position.get_coordinate_from_positions(
-            positions)
+        positions_coordinates = Position.get_coordinate_from_positions(positions)
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a.get_x == b.get_x or a.get_y == b.get_y:
@@ -59,8 +56,7 @@ class Position:
     def is_positions_straight_line(positions: list) -> bool:
         if len(positions) < 4:
             return False
-        positions_coordinates = Position.get_coordinate_from_positions(
-            positions)
+        positions_coordinates = Position.get_coordinate_from_positions(positions)
         for a in positions_coordinates:
             for b in positions_coordinates:
                 if a.get_x == b.get_x or a.get_y == b.get_y:
@@ -75,8 +71,7 @@ class Position:
     def is_positions_oblique_line(positions: list) -> bool:
         if len(positions) < 4:
             return False
-        positions_coordinates = Position.get_coordinate_from_positions(
-            positions)
+        positions_coordinates = Position.get_coordinate_from_positions(positions)
         c = 0
         for a in positions_coordinates:
             for b in positions_coordinates:
@@ -92,7 +87,11 @@ class Position:
 
     @staticmethod
     def position_is_winning_position(positions: list) -> bool:
-        return Position.is_positions_square(positions) or Position.is_positions_straight_line(positions) or Position.is_positions_oblique_line(positions)
+        return (
+            Position.is_positions_square(positions)
+            or Position.is_positions_straight_line(positions)
+            or Position.is_positions_oblique_line(positions)
+        )
 
     def set_piece(self, piece: TeekoPieceEnum):
         self._piece = piece

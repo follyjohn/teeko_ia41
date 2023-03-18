@@ -1,20 +1,10 @@
-"""
-    Metadata: 
-        author:    follyjohn
-        date:      2021-11-21
-        purpose:   Coordinate class
-
-    Description: Simple class to represent a coordinate in the game.
-"""
-
 from typing import List
 
 
 class Coordinate:
-
     def __init__(self, x: int, y: int):
         # Coodinate values must be (-1, -1), or (a,b) where a and b are between 0 and 4
-        if(x < -1 or x > 4 or y < -1 or y > 4) or (x == -1 and y != -1) or (x != -1 and y == -1):
+        if (x < -1 or x > 4 or y < -1 or y > 4) or (x == -1 and y != -1) or (x != -1 and y == -1):
             raise ValueError("Invalid coordinate")
         self._x = x
         self._y = y
@@ -46,22 +36,14 @@ class Coordinate:
     def get_next_coordinates(self) -> List:
         next_coordinates = []
         if self.get_x != -1 and self.get_y != -1:
-            Coordinate.append_coordinate(
-                self.get_x, self.get_y + 1, next_coordinates)
-            Coordinate.append_coordinate(
-                self.get_x, self.get_y - 1, next_coordinates)
-            Coordinate.append_coordinate(
-                self.get_x + 1, self.get_y, next_coordinates)
-            Coordinate.append_coordinate(
-                self.get_x - 1, self.get_y, next_coordinates)
-            Coordinate.append_coordinate(
-                self.get_x + 1, self.get_y + 1, next_coordinates)
-            Coordinate.append_coordinate(
-                self.get_x - 1, self.get_y - 1, next_coordinates)
-            Coordinate.append_coordinate(
-                self.get_x + 1, self.get_y - 1, next_coordinates)
-            Coordinate.append_coordinate(
-                self.get_x - 1, self.get_y + 1, next_coordinates)
+            Coordinate.append_coordinate(self.get_x, self.get_y + 1, next_coordinates)
+            Coordinate.append_coordinate(self.get_x, self.get_y - 1, next_coordinates)
+            Coordinate.append_coordinate(self.get_x + 1, self.get_y, next_coordinates)
+            Coordinate.append_coordinate(self.get_x - 1, self.get_y, next_coordinates)
+            Coordinate.append_coordinate(self.get_x + 1, self.get_y + 1, next_coordinates)
+            Coordinate.append_coordinate(self.get_x - 1, self.get_y - 1, next_coordinates)
+            Coordinate.append_coordinate(self.get_x + 1, self.get_y - 1, next_coordinates)
+            Coordinate.append_coordinate(self.get_x - 1, self.get_y + 1, next_coordinates)
 
         return next_coordinates
 

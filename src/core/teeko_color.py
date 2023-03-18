@@ -7,18 +7,18 @@
     Description: Enum class for the game. This class is used to represent the different colors of pieces in the game.
 """
 from enum import Enum
+from .teeko_piece import TeekoPieceEnum
 
-from src.models.teeko_piece import TeekoPieceEnum
 
 class TeekoColorEnum(Enum):
     BLACK_COLOR = "black"
     RED_COLOR = "red"
 
 
-"""
-    color_to_piece: return the piece corresponding to the color
-"""
 def color_to_piece(color: TeekoColorEnum) -> TeekoPieceEnum:
+    """
+        color_to_piece: return the piece corresponding to the color
+    """
     if color == TeekoColorEnum.BLACK_COLOR:
         return TeekoPieceEnum.BLACK_PIECE
     elif color == TeekoColorEnum.RED_COLOR:
@@ -36,10 +36,10 @@ def get_opponent(color: TeekoColorEnum) -> TeekoColorEnum:
         raise ValueError("Color not found")
 
 
-"""
-    piece_to_color_str: return the color corresponding to the piece
-"""
 def piece_to_color(piece: TeekoPieceEnum) -> TeekoColorEnum:
+    """
+        piece_to_color_str: return the color corresponding to the piece
+    """
     if piece == TeekoPieceEnum.BLACK_PIECE:
         return TeekoColorEnum.BLACK_COLOR
     elif piece == TeekoPieceEnum.RED_PIECE:
